@@ -312,7 +312,7 @@ function HomeScreen({ navigation }) {
                 database()
                 .ref('/Users')
                 .update({
-                  TMPoints: 32,
+                  TMPoints: 48,
                 })
                 .then(() => console.log('Data updated.'));
                 }} 
