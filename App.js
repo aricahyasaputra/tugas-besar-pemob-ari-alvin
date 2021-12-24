@@ -181,6 +181,17 @@ function App() {
           },
           headerTitleAlign:'center',
           }} name="Pick Up Info" component={PickUpInfo} />
+          <Stack.Screen options={{headerStyle: {
+            backgroundColor: '#E9FFFD',
+          },
+          headerTitleStyle:{
+            textAlign: 'center', 
+            fontFamily: 'NotoSansTC-Bold-Alphabetic', 
+            color:'#554D4D', 
+            fontSize: 26,
+          },
+          headerTitleAlign:'center',
+          }} name="Tukar Points" component={Redeem} />
         <Stack.Screen options={{headerShown: false}} name="Drop Off Diproses" component={DropOffDiproses} />
         <Stack.Screen options={{headerShown: false}} name="Pick Up Diproses" component={PickUpDiproses} />
         <Stack.Screen options={{headerShown: false}} name="Edit Profil Berhasil" component={EditProfilBerhasil} />
@@ -285,7 +296,9 @@ function HomeScreen({ navigation }) {
             }}>
               <Image source={require('./assets/icon/share.png')}/>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=> {
+            navigation.navigate('Tukar Points')
+            }}>
               <Image source={require('./assets/icon/sell.png')}/>
             </TouchableOpacity>
           </View>
@@ -466,6 +479,39 @@ function Share({ navigation }) {
         </View>
       </View>
     </View>
+  );
+}
+
+function Redeem({ navigation }) {
+  return (
+    <ScrollView style={{backgroundColor : '#E9FFFD', flex: 1}}>
+      <View style={{paddingHorizontal: 25}}>
+        <View style={{justifyContent:'space-between', flexDirection:'row', paddingHorizontal: 20, paddingTop: 10, paddingBottom: 10, marginBottom: 10, backgroundColor: '#FDF9F9', marginTop: 25, borderRadius: 6, elevation: 5}}>
+          <Text style={{color:'#554D4D', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26}}>TM Points</Text>
+          <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26}}>{global.TMPoints}</Text>
+        </View>
+        <View>
+          <View style={{marginTop: 15, backgroundColor: '#FFFFFF', marginBottom: 30}}>
+            <Image style={{height: 212, width: 345}} source={require('./assets/dummy/pegadaian.png')}/>
+            <View style={{width: 345, marginTop: 165, position: 'absolute', backgroundColor: '#FFFFFF', elevation: 5, borderBottomRightRadius: 6, borderBottomLeftRadius: 6}}>
+              <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 13, textAlign: 'center', paddingTop: 10}}>Tukarkan Poinmu menjadi tabungan emas senilai 15.000</Text>
+              <View style={{flexDirection: 'row', paddingTop: 5, paddingLeft: 5, marginBottom: 12}}>
+                <View style={{paddingTop: 10, flexDirection: 'row'}}>
+                  <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>15000 </Text>
+                  <Text style={{color:'#766F6F', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>Points</Text>
+                </View>
+              
+                <TouchableOpacity onPress={()=> {
+                  }} 
+                style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, marginLeft: 120, elevation: 5}}>
+                  <Text style={{fontSize: 13, fontWeight: 'bold', color: 'white', textAlign: 'center'}}>Tukar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
