@@ -22,7 +22,12 @@ global.Password = 'bebas'
 global.Alamat = 'Bandung'
 global.JenisKelamin = 1
 
-
+//database()
+  //.ref('/Users')
+  //.update({
+    //TMPoints: 48,
+  //})
+  //.then(() => console.log('Data updated.'));
 
 
 
@@ -191,12 +196,73 @@ function App() {
             fontSize: 26,
           },
           headerTitleAlign:'center',
-          }} name="Tukar Points" component={Redeem} />
+          }} name="Redeem" component={Redeem} />
+          <Stack.Screen options={{headerStyle: {
+            backgroundColor: '#E9FFFD',
+          },
+          title: 'Tukar TM Points',
+          headerTitleStyle:{
+            textAlign: 'center', 
+            fontFamily: 'NotoSansTC-Bold-Alphabetic', 
+            color:'#554D4D', 
+            fontSize: 26,
+          },
+          headerTitleAlign:'center',
+          }} name="Redeem Pegadaian" component={RedeemPegadaian} />
+          <Stack.Screen options={{headerStyle: {
+            backgroundColor: '#E9FFFD',
+          },
+          title: 'Tukar TM Points',
+          headerTitleStyle:{
+            textAlign: 'center', 
+            fontFamily: 'NotoSansTC-Bold-Alphabetic', 
+            color:'#554D4D', 
+            fontSize: 26,
+          },
+          headerTitleAlign:'center',
+          }} name="Redeem Shopee Pay" component={RedeemShopeePay} />
+          <Stack.Screen options={{headerStyle: {
+            backgroundColor: '#E9FFFD',
+          },
+          title: 'Tukar TM Points',
+          headerTitleStyle:{
+            textAlign: 'center', 
+            fontFamily: 'NotoSansTC-Bold-Alphabetic', 
+            color:'#554D4D', 
+            fontSize: 26,
+          },
+          headerTitleAlign:'center',
+          }} name="Redeem Go Pay" component={RedeemGoPay} />
+          <Stack.Screen options={{headerStyle: {
+            backgroundColor: '#E9FFFD',
+          },
+          title: 'Tukar TM Points',
+          headerTitleStyle:{
+            textAlign: 'center', 
+            fontFamily: 'NotoSansTC-Bold-Alphabetic', 
+            color:'#554D4D', 
+            fontSize: 26,
+          },
+          headerTitleAlign:'center',
+          }} name="Redeem OVO" component={RedeemOVO} />
+          <Stack.Screen options={{headerStyle: {
+            backgroundColor: '#E9FFFD',
+          },
+          title: 'Tukar TM Points',
+          headerTitleStyle:{
+            textAlign: 'center', 
+            fontFamily: 'NotoSansTC-Bold-Alphabetic', 
+            color:'#554D4D', 
+            fontSize: 26,
+          },
+          headerTitleAlign:'center',
+          }} name="Redeem Dompet Dhuafa" component={RedeemDompetDhuafa} />
         <Stack.Screen options={{headerShown: false}} name="Drop Off Diproses" component={DropOffDiproses} />
         <Stack.Screen options={{headerShown: false}} name="Pick Up Diproses" component={PickUpDiproses} />
         <Stack.Screen options={{headerShown: false}} name="Edit Profil Berhasil" component={EditProfilBerhasil} />
         <Stack.Screen options={{headerShown: false}} name="Share" component={Share} />
         <Stack.Screen options={{headerShown: false}} name="Share Berhasil" component={ShareBerhasil} />
+        <Stack.Screen options={{headerShown: false}} name="Redeem Berhasil" component={RedeemBerhasil} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -297,9 +363,9 @@ function HomeScreen({ navigation }) {
               <Image source={require('./assets/icon/share.png')}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={()=> {
-            navigation.navigate('Tukar Points')
+            navigation.navigate('Redeem')
             }}>
-              <Image source={require('./assets/icon/sell.png')}/>
+              <Image source={require('./assets/icon/redeem.png')}/>
             </TouchableOpacity>
           </View>
           <View style={{flexDirection: 'row', justifyContent:'space-between', alignItems: 'center', marginBottom: 10}}>
@@ -322,12 +388,7 @@ function HomeScreen({ navigation }) {
               </View>
             
               <TouchableOpacity onPress={()=> {
-                database()
-                .ref('/Users')
-                .update({
-                  TMPoints: 48,
-                })
-                .then(() => console.log('Data updated.'));
+                navigation.navigate('Redeem Pegadaian')
                 }} 
                style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, marginLeft: 120, elevation: 5}}>
                 <Text style={{fontSize: 13, fontWeight: 'bold', color: 'white', textAlign: 'center'}}>Tukar</Text>
@@ -423,7 +484,9 @@ function Share({ navigation }) {
                 <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>15000 </Text>
                 <Text style={{color:'#766F6F', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>Points</Text>
               </View>
-              <TouchableOpacity style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, marginLeft: 120, elevation: 5}}>
+              <TouchableOpacity style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, marginLeft: 120, elevation: 5}} onPress={()=> {
+            navigation.navigate('Redeem Pegadaian')
+            }}>
                 <Text style={{fontSize: 13, fontWeight: 'bold', color: 'white', textAlign: 'center'}}>Tukar</Text>
               </TouchableOpacity>
             </View>
@@ -500,8 +563,80 @@ function Redeem({ navigation }) {
                   <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>15000 </Text>
                   <Text style={{color:'#766F6F', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>Points</Text>
                 </View>
-              
                 <TouchableOpacity onPress={()=> {
+                  navigation.navigate('Redeem Pegadaian')
+                  }} 
+                style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, marginLeft: 120, elevation: 5}}>
+                  <Text style={{fontSize: 13, fontWeight: 'bold', color: 'white', textAlign: 'center'}}>Tukar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <View style={{marginTop: 15, backgroundColor: '#FFFFFF', marginBottom: 30}}>
+            <Image style={{height: 212, width: 345}} source={require('./assets/dummy/shopee-pay.png')}/>
+            <View style={{width: 345, marginTop: 165, position: 'absolute', backgroundColor: '#FFFFFF', elevation: 5, borderBottomRightRadius: 6, borderBottomLeftRadius: 6}}>
+              <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 13, textAlign: 'left', paddingTop: 10, paddingLeft: 5}}>Tukarkan Poinmu dengan saldo ShopeePay senilai 10.000</Text>
+              <View style={{flexDirection: 'row', paddingTop: 5, paddingLeft: 5, marginBottom: 12}}>
+                <View style={{paddingTop: 10, flexDirection: 'row'}}>
+                  <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>10000 </Text>
+                  <Text style={{color:'#766F6F', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>Points</Text>
+                </View>
+                <TouchableOpacity onPress={()=> {
+                  navigation.navigate('Redeem Shopee Pay')
+                  }} 
+                style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, marginLeft: 120, elevation: 5}}>
+                  <Text style={{fontSize: 13, fontWeight: 'bold', color: 'white', textAlign: 'center'}}>Tukar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <View style={{marginTop: 15, backgroundColor: '#FFFFFF', marginBottom: 30}}>
+            <Image style={{height: 212, width: 345}} source={require('./assets/dummy/ovo.png')}/>
+            <View style={{width: 345, marginTop: 165, position: 'absolute', backgroundColor: '#FFFFFF', elevation: 5, borderBottomRightRadius: 6, borderBottomLeftRadius: 6}}>
+              <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 13, textAlign: 'left', paddingTop: 10, paddingLeft: 5}}>Tukarkan Poinmu dengan saldo OVO senilai 10.000</Text>
+              <View style={{flexDirection: 'row', paddingTop: 5, paddingLeft: 5, marginBottom: 12}}>
+                <View style={{paddingTop: 10, flexDirection: 'row'}}>
+                  <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>10000 </Text>
+                  <Text style={{color:'#766F6F', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>Points</Text>
+                </View>
+                <TouchableOpacity onPress={()=> {
+                  navigation.navigate('Redeem OVO')
+                  }} 
+                style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, marginLeft: 120, elevation: 5}}>
+                  <Text style={{fontSize: 13, fontWeight: 'bold', color: 'white', textAlign: 'center'}}>Tukar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <View style={{marginTop: 15, backgroundColor: '#FFFFFF', marginBottom: 30}}>
+            <Image style={{height: 212, width: 345}} source={require('./assets/dummy/go-pay.png')}/>
+            <View style={{width: 345, marginTop: 165, position: 'absolute', backgroundColor: '#FFFFFF', elevation: 5, borderBottomRightRadius: 6, borderBottomLeftRadius: 6}}>
+              <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 13, textAlign: 'left', paddingTop: 10, paddingLeft: 5}}>Tukarkan Poinmu dengan saldo GoPay senilai 10.000</Text>
+              <View style={{flexDirection: 'row', paddingTop: 5, paddingLeft: 5, marginBottom: 12}}>
+                <View style={{paddingTop: 10, flexDirection: 'row'}}>
+                  <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>10000 </Text>
+                  <Text style={{color:'#766F6F', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>Points</Text>
+                </View>
+                <TouchableOpacity onPress={()=> {
+                  navigation.navigate('Redeem Go Pay')
+                  }} 
+                style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, marginLeft: 120, elevation: 5}}>
+                  <Text style={{fontSize: 13, fontWeight: 'bold', color: 'white', textAlign: 'center'}}>Tukar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <View style={{marginTop: 15, backgroundColor: '#FFFFFF', marginBottom: 90}}>
+            <Image style={{height: 175, width: 345}} source={require('./assets/dummy/dompet-dhuafa.png')}/>
+            <View style={{width: 345, marginTop: 165, position: 'absolute', backgroundColor: '#FFFFFF', elevation: 5, borderBottomRightRadius: 6, borderBottomLeftRadius: 6}}>
+              <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 13, textAlign: 'left', paddingTop: 10, paddingLeft: 5}}>Tukarkan Poinmu ke Dompet Dhuafa</Text>
+              <View style={{flexDirection: 'row', paddingTop: 5, paddingLeft: 5, marginBottom: 12}}>
+                <View style={{paddingTop: 10, flexDirection: 'row'}}>
+                  <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>10000 </Text>
+                  <Text style={{color:'#766F6F', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, textAlign: 'center'}}>Points</Text>
+                </View>
+                <TouchableOpacity onPress={()=> {
+                  navigation.navigate('Redeem Dompet Dhuafa')
                   }} 
                 style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, marginLeft: 120, elevation: 5}}>
                   <Text style={{fontSize: 13, fontWeight: 'bold', color: 'white', textAlign: 'center'}}>Tukar</Text>
@@ -515,13 +650,198 @@ function Redeem({ navigation }) {
   );
 }
 
+function RedeemPegadaian({ navigation }) {
+  return (
+    <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
+      <View style={{paddingHorizontal: 25}}>
+        <View style={{flexDirection: 'row', paddingTop: 35, justifyContent: 'space-between'}}>
+          <View style={{backgroundColor: 'rgba(255, 163, 24, 0.48)', paddingVertical: 15, paddingHorizontal: 25, borderRadius: 6, borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.1)'}}>
+            <Text style={{color: '#666666', fontFamily: 'NotoSansTC-Medium-Alphabetic', opacity: 0.72, fontSize: 11}}>Harga beli saat ini</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{color: '#FFB800', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Rp.8.730</Text>
+              <Text style={{color: '#666666', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 11}}>/0.01 gram</Text>
+            </View>
+          </View>
+          <View style={{backgroundColor: 'rgba(255, 163, 24, 0.48)', paddingVertical: 15, paddingHorizontal: 25, borderRadius: 6, borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.1)'}}>
+            <Text style={{color: '#666666', fontFamily: 'NotoSansTC-Medium-Alphabetic', opacity: 0.72, fontSize: 11}}>Harga jual saat ini</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{color: '#FFB800', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Rp.9.000</Text>
+              <Text style={{color: '#666666', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 11}}>/0.01 gram</Text>
+            </View>
+          </View>
+        </View>
+        <View style={{paddingTop: 25}}>
+          <Text style={{color: '#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 18}}>Tukarkan poinmu menjadi tabungan emas senilai Rp 15.000</Text>
+        </View>
+        <View style={{paddingTop: 10}}>
+          <Text style={{color: '#666666', fontSize: 13}}>From waste into Gold. Tukar TS Points menjadi Tabungan Emas dari Pegadaian. Dengan Rp 15.000 kamu dapat mengubah sampah menjadi Tabungan Emas Pegadaian mulai dari 0,01 gram emas, Jumlah gram emas mengikuti harga dari hasil konversi senilai RP 15.000.</Text>
+        </View>
+        <View style={{backgroundColor: '#33D1C1', borderRadius: 6, marginTop: 320}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10}}>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>15.000 TS Points</Text>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : 500.000</Text>
+            </View>
+            <View style={{paddingTop: 5, paddingRight: 10}}>
+              <TouchableOpacity onPress={()=> {
+                  navigation.navigate('Redeem Berhasil')
+                  }} >
+                <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Tukar Sekarang</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function RedeemShopeePay({ navigation }) {
+  return (
+    <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
+      <View style={{paddingHorizontal: 25}}>
+        <View style={{paddingTop: 25}}>
+          <Text style={{color: '#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 18}}>Tukar poin dengan saldo ShopeePay senilai Rp 10.000</Text>
+        </View>
+        <View style={{paddingTop: 10}}>
+          <Text style={{color: '#666666', fontSize: 13}}>Hai kabar gembira nih, buat para pecinta belanja online di Shopee. Sekarang!!! sampahmu bisa ditukar dengan saldo ShopeePay. Ayo segera kumpulkan sampahmu dan tukarkan dengan saldo ShopeePay.</Text>
+        </View>
+        <View style={{backgroundColor: '#33D1C1', borderRadius: 6, marginTop: 450}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10}}>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>10.000 TS Points</Text>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : 500.000</Text>
+            </View>
+            <View style={{paddingTop: 5, paddingRight: 10}}>
+              <TouchableOpacity onPress={()=> {
+                  navigation.navigate('Redeem Berhasil')
+                  }}>
+                <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Tukar Sekarang</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function RedeemOVO({ navigation }) {
+  return (
+    <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
+      <View style={{paddingHorizontal: 25}}>
+        <View style={{paddingTop: 25}}>
+          <Text style={{color: '#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 18}}>Tukar poin dengan saldo OVO senilai     Rp 10.000</Text>
+        </View>
+        <View style={{paddingTop: 10}}>
+          <Text style={{color: '#666666', fontSize: 13}}>Tukarkan segera TS Poinmu dengan Saldo Ovo senilai Rp 10.000 dan dapatkan berbagai macam promo menarik lainnya.</Text>
+        </View>
+        <View style={{backgroundColor: '#33D1C1', borderRadius: 6, marginTop: 460}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10}}>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>10.000 TS Points</Text>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : 500.000</Text>
+            </View>
+            <View style={{paddingTop: 5, paddingRight: 10}}>
+              <TouchableOpacity onPress={()=> {
+                  navigation.navigate('Redeem Berhasil')
+                  }}>
+                <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Tukar Sekarang</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function RedeemGoPay({ navigation }) {
+  return (
+    <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
+      <View style={{paddingHorizontal: 25}}>
+        <View style={{paddingTop: 25}}>
+          <Text style={{color: '#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 18}}>Tukar poin dengan saldo GoPay senilai   Rp 10.000</Text>
+        </View>
+        <View style={{paddingTop: 10}}>
+          <Text style={{color: '#666666', fontSize: 13}}>Ada kabar gembira!. Sekarang kamu bisa menukarkan TS Poin kamu dengan saldo Gopay senilai Rp 10.000, Buruan tukarkan TS poin kamu sekarang.</Text>
+        </View>
+        <View style={{backgroundColor: '#33D1C1', borderRadius: 6, marginTop: 460}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10}}>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>10.000 TS Points</Text>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : 500.000</Text>
+            </View>
+            <View style={{paddingTop: 5, paddingRight: 10}}>
+              <TouchableOpacity onPress={()=> {
+                  navigation.navigate('Redeem Berhasil')
+                  }}>
+                <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Tukar Sekarang</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function RedeemDompetDhuafa({ navigation }) {
+  return (
+    <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
+      <View style={{paddingHorizontal: 25}}>
+        <View style={{paddingTop: 25}}>
+          <Text style={{color: '#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 18}}>Donasikan poinmu ke Dompet Dhuafa</Text>
+        </View>
+        <View style={{paddingTop: 10}}>
+          <Text style={{color: '#666666', fontSize: 13}}>Berbagi itu indah. Ini kesempatan anda untuk membantu sesama dengan mendonasikan poin ke layanan Dompet Dhuafa.</Text>
+        </View>
+        <View style={{backgroundColor: '#33D1C1', borderRadius: 6, marginTop: 480}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10}}>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>10.000 TS Points</Text>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : 500.000</Text>
+            </View>
+            <View style={{paddingTop: 5, paddingRight: 10}}>
+              <TouchableOpacity onPress={()=> {
+                  navigation.navigate('Redeem Berhasil')
+                  }}>
+                <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Tukar Sekarang</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function RedeemBerhasil({ navigation }) {
+  setTimeout(() => {
+    navigation.navigate('Redeem'); 
+}, 3000)
+  return (
+    <View style={{flex: 1, backgroundColor : '#E9FFFD', alignItems: 'center'}}>
+      <View style={{marginBottom: 20, paddingTop: 200}}>
+        <Image source={require('./assets/logo/hore.png')}/>
+      </View>
+      <View style={{}}>
+        <Text style={{fontSize: 24, color: '#424242', textAlign: 'center', fontFamily: 'ABeeZee-Regular'}}>Horeeee !!</Text>
+      </View>
+      <View style={{paddingTop: 5}}>
+        <Text style={{fontSize: 16, color: '#7C7C7C', textAlign: 'center', fontFamily: 'ABeeZee-Regular'}}>Selamat Penukaran TM Points Anda Berhasil</Text>
+      </View>
+    </View>
+  );
+}
+
 function ShareBerhasil({ navigation }) {
   setTimeout(() => {
     navigation.navigate('goHome'); 
 }, 3000)
   return (
     <View style={{flex: 1, backgroundColor : '#E9FFFD', alignItems: 'center'}}>
-      <View style={{marginBottom: 40, paddingTop: 200}}>
+      <View style={{marginBottom: 20, paddingTop: 200}}>
         <Image source={require('./assets/logo/berhasil.png')}/>
       </View>
       <View style={{}}>
@@ -1776,7 +2096,7 @@ function EditProfilBerhasil({ navigation }) {
 }, 3000)
   return (
     <View style={{flex: 1, backgroundColor : '#E9FFFD', alignItems: 'center'}}>
-      <View style={{marginBottom: 40, paddingTop: 200}}>
+      <View style={{marginBottom: 20, paddingTop: 200}}>
         <Image source={require('./assets/logo/berhasil.png')}/>
       </View>
       <View style={{}}>
