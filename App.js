@@ -12,15 +12,15 @@ import Slider from '@react-native-community/slider';
 
 
 
-global.TMPoints = 500
+global.TMPoints = 500000
 global.Nama = 'Ari Cahya'
-global.NamaLengkap = 'Ari Cahya Saputra'
+global.NamaLengkap = 'Alvin Anandra Brilliandy'
 global.TanggalLahir = '05 Februari 2001'
 global.NoHP = '08663129928'
 global.Email = 'alvinanandra@gmail.com'
 global.Password = 'bebas'
 global.Alamat = 'Bandung'
-global.JenisKelamin = 1
+global.JenisKelamin = 0
 
 //database()
   //.ref('/Users')
@@ -30,10 +30,7 @@ global.JenisKelamin = 1
   //.then(() => console.log('Data updated.'));
 
 
-
-
-var NamaLengkapVar = 'Alvin Anandra Brilliandy'
-
+  
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +46,7 @@ function App() {
       appId: "1:927195255936:web:af18fcfee7334c4e254265"
      })
   }
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -1763,7 +1761,7 @@ function Account({ navigation }) {
       <View style={{paddingHorizontal: 25, marginTop: 25}}>
         <View style={{alignItems: 'center', backgroundColor: '#DBF5F3', paddingTop: 15, borderRadius: 10}}>
           <Image source={require('./assets/icon/profile-picture.png')}/>
-          <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26, marginTop: 3, paddingTop: 5, color: '#554D4D'}}>{NamaLengkapVar}</Text>
+          <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26, marginTop: 3, paddingTop: 5, color: '#554D4D'}}>{global.NamaLengkap}</Text>
           <View style={{flexDirection: 'row', marginBottom: 15}}>
             <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, marginTop: 3, paddingTop: 5, color: '#33D1C1'}}>{global.TMPoints} </Text>
             <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, marginTop: 3, paddingTop: 5, color: '#766F6F'}}>Points</Text>
@@ -1865,9 +1863,14 @@ function UbahProfil({ navigation }) {
   const [jenisGender, setjenisGender] = React.useState()
   const [tanggalLahir, setTanggalLahir] = React.useState()
   const [NoHandphone, setNoHandphone] = React.useState()
-  const [Email, setEmail] = React.useState()
+  const [email, setEmail] = React.useState()
   const [password, setPassword] = React.useState()
   const [alamat, setAlamat] = React.useState()
+
+  var listData = {};
+
+  var Alamat, Email, Nama, NoHP, Password, TanggalLahir = ''
+  var JenisKelamin = 0
 
   const s = global.Password;
 
@@ -1899,7 +1902,7 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
             </View>
             <View style={{width: 340, paddingTop: 10}}>
               <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.31)', fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15}}
-              placeholder= {global.NamaLengkap}
+              placeholder= {Nama}
               placeholderTextColor='#33D1C1'
               onChangeText={text => setNamaLengkap(text)}
               />
@@ -1911,7 +1914,7 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
           <View style={{paddingHorizontal: 25, paddingTop: 10}}>
             <RadioForm
                 radio_props={jenisKelamin}
-                initial={global.JenisKelamin}
+                initial={JenisKelamin}
                 formHorizontal={true}
                 labelHorizontal={true}
                 selectedButtonColor={'#33D1C1'}
@@ -1924,7 +1927,7 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
           </View>
           <View style={{width: 340, paddingTop: 10}}>
               <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.31)', fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15}}
-              placeholder= {global.TanggalLahir}
+              placeholder= {TanggalLahir}
               placeholderTextColor='#33D1C1'
               onChangeText={text => setTanggalLahir(text)}
               />
@@ -1934,7 +1937,7 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
           </View>
           <View style={{width: 340, paddingTop: 10}}>
               <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.31)', fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15}}
-              placeholder= {global.NoHP}
+              placeholder= {NoHP}
               placeholderTextColor='#33D1C1'
               onChangeText={text => setNoHandphone(text)}
               />
@@ -1944,7 +1947,7 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
           </View>
           <View style={{width: 340, paddingTop: 10}}>
               <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.31)', fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15}}
-              placeholder= {global.Email}
+              placeholder= {Email}
               placeholderTextColor='#33D1C1'
               onChangeText={text => setEmail(text)}
               />
@@ -1965,7 +1968,7 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
           </View>
           <View style={{width: 340, paddingTop: 10, marginBottom: 25}}>
               <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.31)', fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15}}
-              placeholder= {global.Alamat}
+              placeholder= {Alamat}
               placeholderTextColor='#33D1C1'
               onChangeText={text => setAlamat(text)}
               />
@@ -1973,7 +1976,17 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
           <View style={{marginBottom: 25}}>
             <TouchableOpacity
               onPress={()=> {
-                NamaLengkapVar = namaLengkap
+                database()
+                .ref('/alvin-anandra-brilliandy')
+                .update({
+                Alamat: {alamat},
+                Email: {email},
+                JenisKelamin: {jenisGender},
+                NamaLengkap: {namaLengkap},
+                NoHP: {NoHandphone},
+                Password: {password},
+                TanggalLahir: {tanggalLahir}
+                })
                 navigation.navigate('Edit Profil Berhasil')
                 }}
               style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, elevation: 5}}>
