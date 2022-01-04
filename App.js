@@ -50,6 +50,9 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen options={{headerShown: false}} name="Splash Screen" component={SplashScreen} />
+        <Stack.Screen options={{headerShown: false}} name="Login" component={Login} />
+        <Stack.Screen options={{headerShown: false}} name="Register" component={Register} />
         <Stack.Screen options={{headerShown: false}} name="goHome" component={HomeTabScreen} />
         <Stack.Screen options={{headerShown: false}} name="Information" component={Information} />
         <Stack.Screen options={{headerShown: false}} name="Notification" component={Notification} />
@@ -266,6 +269,91 @@ function App() {
   );
 }
 
+function SplashScreen({ navigation }) {
+  setTimeout(() => {
+    navigation.navigate('Login'); 
+}, 3000)
+  return (
+    <View style={{backgroundColor : '#E9FFFD', flex: 1, alignSelf: 'center', justifyContent: 'center', paddingHorizontal: 100}}>
+      <Image source={require('./assets/logo/trashmon.png')}/>
+    </View>
+  );
+}
+
+function Login({ navigation }) {
+  const [username, setUsername] = React.useState()
+  const [password, setPassword] = React.useState()
+
+  return (
+    <View  style={{backgroundColor : '#E9FFFD', flex: 1}}> 
+      <View style={{alignSelf: 'center', paddingTop: 80}}>
+        <Image source={require('./assets/logo/trashmon-kecil.png')}/>
+      </View>
+      <View style={{width: 320, paddingTop: 10, alignSelf:'center'}}>
+        <TextInput style={{borderRadius: 6, fontSize: 14, fontWeight:'400', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
+        placeholder= "Username"
+        placeholderTextColor='#7D7B92'
+        onChangeText={text => setUsername(text)}
+        value={username}
+        />
+      </View>
+      <View style={{width: 320, paddingTop: 10, alignSelf:'center', paddingTop: 16}}>
+        <TextInput style={{borderRadius: 6, fontSize: 14, fontWeight:'400', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
+        placeholder= "Password"
+        placeholderTextColor='#7D7B92'
+        secureTextEntry= {true}
+        onChangeText={text => setPassword(text)}
+        value={password}
+        />
+      </View>
+      <View style={{width: 320, alignSelf:'center', paddingTop: 32}}>
+        <TouchableOpacity onPress={()=> {
+          navigation.navigate('Redeem Pegadaian')
+          }} 
+          style={{backgroundColor: '#33D1C1', paddingVertical: 8, borderRadius: 10, elevation: 5}}>
+          <Text style={{fontSize: 14, fontFamily: 'NotoSansTC-Bold-Alphabetic', color: 'white', textAlign: 'center'}}>LOGIN</Text>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity>
+        <View style={{paddingLeft: 280, paddingTop: 16}}>
+          <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#757575', fontSize: 10}}>Lupa Password?</Text>
+        </View>
+      </TouchableOpacity>
+      <View style={{paddingTop: 36}}>
+        <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#757575', fontSize: 10, textAlign: 'center'}}>Atau masuk dengan</Text>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 16}}>
+        <Image source={require('./assets/icon/facebook.png')}/>
+        <Image style={{marginLeft: 25}} source={require('./assets/icon/gmail.png')}/>
+      </View>
+    </View>
+  );
+}
+function Register({ navigation }) {
+  return (
+    <View  style={{backgroundColor : '#E9FFFD', flex: 1}}> 
+        <TouchableOpacity style={{position: 'absolute', zIndex: 3, paddingTop: 235, paddingLeft: 40}}>
+          <Text>halo</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{position: 'absolute', zIndex: 2, paddingTop: 235, paddingLeft: 320}}>
+          <Text style={{color: 'orange'}}>hai</Text>
+        </TouchableOpacity>
+      <View style={{backgroundColor: 'white', paddingBottom: 10, paddingHorizontal: 95, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, paddingBottom: 50}}>
+        <Image source={require('./assets/logo/trashmon-kecil.png')}/>
+      </View>
+      <View style={{paddingHorizontal: 60}}>
+        <View style={{ paddingTop: 10 , borderBottomWidth: 1}}>
+                  <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0)', fontSize: 14, paddingLeft: 15}}
+                  placeholderTextColor='#33D1C1'
+                  />
+          </View>
+      </View>
+
+    </View>
+  );
+}
+
+
 function HomeTabScreen() {
   return (
     <Tab.Navigator barStyle={{backgroundColor: '#B7E1DA'}}>
@@ -331,8 +419,8 @@ function HomeScreen({ navigation }) {
         <TouchableOpacity onPress={()=> {
             navigation.navigate('Notification')
             }}>
-          <View style={{ paddingRight: 25, paddingTop: 20}}>
             <Image source={require('./assets/icon/notification.png')}/>
+          <View style={{ paddingRight: 25, paddingTop: 20}}>
           </View>
         </TouchableOpacity>
       </View>
@@ -1866,8 +1954,20 @@ function UbahProfil({ navigation }) {
   const [email, setEmail] = React.useState()
   const [password, setPassword] = React.useState()
   const [alamat, setAlamat] = React.useState()
+  const [data, setData] = React.useState()
 
-  var listData = {};
+  React.useEffect( () => {
+    database()
+    .ref('/alvin-anandra-brilliandy')
+    .once('value')
+    .then(snapshot => {
+      console.log('User data: ', snapshot.val());
+      let data=snapshot.val()
+      console.log(data.Alamat.alamat)
+      setData(snapshot.val())
+      setNamaLengkap(data.Nama)
+    });
+  }, [])
 
   var Alamat, Email, Nama, NoHP, Password, TanggalLahir = ''
   var JenisKelamin = 0
@@ -1905,6 +2005,7 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
               placeholder= {Nama}
               placeholderTextColor='#33D1C1'
               onChangeText={text => setNamaLengkap(text)}
+              value={namaLengkap}
               />
             </View>
           </View>
@@ -1976,6 +2077,7 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
           <View style={{marginBottom: 25}}>
             <TouchableOpacity
               onPress={()=> {
+                console.log(alamat)
                 database()
                 .ref('/alvin-anandra-brilliandy')
                 .update({
