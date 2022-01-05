@@ -8,8 +8,8 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import Slider from '@react-native-community/slider';
-
-
+import auth from '@react-native-firebase/auth';
+//import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 
 
 global.TMPoints = 500000
@@ -270,13 +270,14 @@ function App() {
 }
 
 function SplashScreen({ navigation }) {
-  setTimeout(() => {
-    navigation.navigate('Login'); 
-}, 3000)
   return (
-    <View style={{backgroundColor : '#E9FFFD', flex: 1, alignSelf: 'center', justifyContent: 'center', paddingHorizontal: 100}}>
-      <Image source={require('./assets/logo/trashmon.png')}/>
-    </View>
+    <TouchableOpacity onPress={()=> {
+      navigation.navigate('Login')
+      }}>  
+      <View style={{backgroundColor : '#E9FFFD', flex: 1, alignSelf: 'center', justifyContent: 'center', paddingHorizontal: 100}}>
+        <Image source={require('./assets/logo/trashmon.png')}/>
+      </View>
+    </TouchableOpacity>
   );
 }
 
@@ -284,21 +285,23 @@ function Login({ navigation }) {
   const [username, setUsername] = React.useState()
   const [password, setPassword] = React.useState()
 
+
+
   return (
     <View  style={{backgroundColor : '#E9FFFD', flex: 1}}> 
-      <View style={{alignSelf: 'center', paddingTop: 80}}>
+      <View style={{alignSelf: 'center', paddingTop: 60}}>
         <Image source={require('./assets/logo/trashmon-kecil.png')}/>
       </View>
       <View style={{width: 320, paddingTop: 10, alignSelf:'center'}}>
-        <TextInput style={{borderRadius: 6, fontSize: 14, fontWeight:'400', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
+        <TextInput style={{borderRadius: 6, fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
         placeholder= "Username"
         placeholderTextColor='#7D7B92'
         onChangeText={text => setUsername(text)}
         value={username}
         />
       </View>
-      <View style={{width: 320, paddingTop: 10, alignSelf:'center', paddingTop: 16}}>
-        <TextInput style={{borderRadius: 6, fontSize: 14, fontWeight:'400', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
+      <View style={{width: 320, alignSelf:'center', paddingTop: 16}}>
+        <TextInput style={{borderRadius: 6, fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
         placeholder= "Password"
         placeholderTextColor='#7D7B92'
         secureTextEntry= {true}
@@ -308,47 +311,163 @@ function Login({ navigation }) {
       </View>
       <View style={{width: 320, alignSelf:'center', paddingTop: 32}}>
         <TouchableOpacity onPress={()=> {
-          navigation.navigate('Redeem Pegadaian')
+          navigation.navigate('goHome')
           }} 
           style={{backgroundColor: '#33D1C1', paddingVertical: 8, borderRadius: 10, elevation: 5}}>
           <Text style={{fontSize: 14, fontFamily: 'NotoSansTC-Bold-Alphabetic', color: 'white', textAlign: 'center'}}>LOGIN</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity>
-        <View style={{paddingLeft: 280, paddingTop: 16}}>
-          <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#757575', fontSize: 10}}>Lupa Password?</Text>
+        <View style={{paddingLeft: 265, paddingTop: 16}}>
+          <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#757575', fontSize: 12}}>Lupa Password?</Text>
         </View>
       </TouchableOpacity>
       <View style={{paddingTop: 36}}>
-        <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#757575', fontSize: 10, textAlign: 'center'}}>Atau masuk dengan</Text>
+        <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#757575', fontSize: 12, textAlign: 'center'}}>Atau masuk dengan</Text>
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 16}}>
-        <Image source={require('./assets/icon/facebook.png')}/>
-        <Image style={{marginLeft: 25}} source={require('./assets/icon/gmail.png')}/>
+        <TouchableOpacity onPress={()=> {
+          }}>
+          <Image source={require('./assets/icon/facebook.png')}/>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image style={{marginLeft: 25}} source={require('./assets/icon/gmail.png')}/>
+        </TouchableOpacity>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 72}}>
+        <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#757575', fontSize: 12, textAlign: 'center'}}>Tidak punya akun?</Text>
+        <TouchableOpacity onPress={()=> {
+          navigation.navigate('Register')
+          }}>
+          <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#2295FF', fontSize: 12, textAlign: 'center'}}> Buat akun</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 function Register({ navigation }) {
+  const [username, setUsername] = React.useState()
+  const [email, setEmail] = React.useState()
+  const [alamat, setAlamat] = React.useState()
+  const [noHP, setNoHP] = React.useState()
+  const [password, setPassword] = React.useState()
+
+
+  //database()
+    //.ref('/users')
+    //.child('alvin-anandra-brilliandy')
+    //.update({
+    //Password: password,
+    //}).then(data => {  
+      
+  var dataID = ''
+
+  function pushDataLogin(){
+      auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        var user = auth().currentUser;
+        database()
+        .ref('users')
+        .child(user.uid)
+        .set({
+        username : username,
+        email: email,
+        alamat: alamat,
+        noHP: noHP,
+        password: password,
+  })
+      console.log('User account created & signed in!');
+    })
+    .catch(error => {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+
+      console.error(error);
+        });
+
+  }
+  
   return (
     <View  style={{backgroundColor : '#E9FFFD', flex: 1}}> 
-        <TouchableOpacity style={{position: 'absolute', zIndex: 3, paddingTop: 235, paddingLeft: 40}}>
-          <Text>halo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{position: 'absolute', zIndex: 2, paddingTop: 235, paddingLeft: 320}}>
-          <Text style={{color: 'orange'}}>hai</Text>
-        </TouchableOpacity>
-      <View style={{backgroundColor: 'white', paddingBottom: 10, paddingHorizontal: 95, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, paddingBottom: 50}}>
-        <Image source={require('./assets/logo/trashmon-kecil.png')}/>
+      <View style={{paddingTop: 40}}>
+        <Text style={{ fontFamily: 'ABeeZee-Regular', color:'#7C7C7C', fontSize: 16, textAlign: 'center'}}>Buat akun anda</Text>
       </View>
-      <View style={{paddingHorizontal: 60}}>
-        <View style={{ paddingTop: 10 , borderBottomWidth: 1}}>
-                  <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0)', fontSize: 14, paddingLeft: 15}}
-                  placeholderTextColor='#33D1C1'
-                  />
-          </View>
+      <View style={{width: 320, paddingTop: 40, alignSelf:'center'}}>
+        <TextInput style={{borderRadius: 6, fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
+        placeholder= "Usarname"
+        placeholderTextColor='#7D7B92'
+        onChangeText={text => setUsername(text)}
+        value={username}
+        />
       </View>
-
+      <View style={{width: 320, alignSelf:'center', paddingTop: 16}}>
+        <TextInput style={{borderRadius: 6, fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
+        placeholder= "Email"
+        placeholderTextColor='#7D7B92'
+        onChangeText={text => setEmail(text)}
+        value={email}
+        />
+      </View>
+      <View style={{width: 320, alignSelf:'center', paddingTop: 16}}>
+        <TextInput style={{borderRadius: 6, fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
+        placeholder= "Alamat"
+        placeholderTextColor='#7D7B92'
+        onChangeText={text => setAlamat(text)}
+        value={alamat}
+        />
+      </View>
+      <View style={{width: 320, alignSelf:'center', paddingTop: 16}}>
+        <TextInput style={{borderRadius: 6, fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
+        placeholder= "Nomor Ponsel"
+        placeholderTextColor='#7D7B92'
+        onChangeText={text => setNoHP(text)}
+        value={noHP}
+        />
+      </View>
+      <View style={{width: 320, alignSelf:'center', paddingTop: 16}}>
+        <TextInput style={{borderRadius: 6, fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
+        placeholder= "Password"
+        placeholderTextColor='#7D7B92'
+        secureTextEntry= {true}
+        onChangeText={text => setPassword(text)}
+        value={password}
+        />
+      </View>
+      <View style={{alignSelf: 'center', paddingTop: 35}}>
+        <TouchableOpacity style={{backgroundColor: '#33D1C1', paddingVertical: 8, borderRadius: 10, width: 320, elevation: 10}} 
+        onPress={()=> {
+          pushDataLogin()
+          console.log("Id data", dataID)
+            }}
+          >
+          <Text style={{fontSize: 14, fontFamily: 'NotoSansTC-Bold-Alphabetic', color: 'white', textAlign: 'center'}}>Register</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={{paddingLeft: 35, paddingTop: 35}}>
+        <Text style={{ fontFamily: 'ABeeZee-Regular', color:'#7C7C7C', fontSize: 13}}>Dengan mendaftar, Anda menyetujui </Text>
+        <View style={{position: 'absolute', paddingLeft: 270, paddingTop: 35}}>
+          <Text style={{ fontFamily: 'ABeeZee-Regular', color:'#2295FF', fontSize: 13}}>Persyaratan</Text>
+        </View>
+        <Text style={{ fontFamily: 'ABeeZee-Regular', color:'#2295FF', fontSize: 13}}>Layanan kami</Text>
+        <View style={{position: 'absolute', paddingLeft: 130, paddingTop: 50}}>
+          <Text style={{ fontFamily: 'ABeeZee-Regular', color:'#7C7C7C', fontSize: 13}}>dan telah membaca dan mengakui </Text>
+        </View>
+        <Text style={{ fontFamily: 'ABeeZee-Regular', color:'#2295FF', fontSize: 13, paddingLeft: 80}}>Pernyataan Privasi kami</Text>      
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 80}}>
+        <Text style={{ fontFamily: 'ABeeZee-Regular', color:'#7C7C7C', fontSize: 14}}>Sudah punya akun? </Text>
+        <TouchableOpacity onPress={()=> {
+            navigation.navigate('Login')
+            }}>
+          <Text style={{ fontFamily: 'ABeeZee-Regular', color:'#2295FF', fontSize: 14}}>Masuk</Text> 
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
