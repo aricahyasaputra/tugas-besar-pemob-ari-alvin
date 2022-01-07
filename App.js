@@ -53,6 +53,7 @@ function App() {
         <Stack.Screen options={{headerShown: false}} name="Splash Screen" component={SplashScreen} />
         <Stack.Screen options={{headerShown: false}} name="Login" component={Login} />
         <Stack.Screen options={{headerShown: false}} name="Register" component={Register} />
+        <Stack.Screen options={{headerShown: false}} name="Register Berhasil" component={RegisterBerhasil} />
         <Stack.Screen options={{headerShown: false}} name="goHome" component={HomeTabScreen} />
         <Stack.Screen options={{headerShown: false}} name="Information" component={Information} />
         <Stack.Screen options={{headerShown: false}} name="Notification" component={Notification} />
@@ -282,11 +283,39 @@ function SplashScreen({ navigation }) {
 }
 
 function Login({ navigation }) {
-  const [username, setUsername] = React.useState()
+  const [email, setEmail] = React.useState()
   const [password, setPassword] = React.useState()
+  const [emailError, setEmailError] = React.useState("")
+  const [passwordError, setPasswordError] = React.useState("")
+  const [emailPasswordErrorValidLogin, setEmailPasswordErrorValidLogin] = React.useState("")
+  const [emailPasswordValidLogin, setEmailPasswordValidLogin] = React.useState(true)
+
+  const handleSubmit = () => {
+      var emailValid = false;
+      if(!email){
+          setEmailError("Masukkan email anda");
+      }         
+      else{
+          setEmailError("")
+          emailValid = true
+      }
+  
+      var passwordValid = false;
+      if(!password){
+          setPasswordError("Masukkan password anda");
+      }          
+      else{
+          setPasswordError("")
+          passwordValid = true
+      }        
 
 
-
+      if(emailValid && passwordValid){            
+          alert('Email: ' + email + '\nPassword: ' + password); 
+      }        
+  
+    }
+    
   return (
     <View  style={{backgroundColor : '#E9FFFD', flex: 1}}> 
       <View style={{alignSelf: 'center', paddingTop: 60}}>
@@ -294,11 +323,14 @@ function Login({ navigation }) {
       </View>
       <View style={{width: 320, paddingTop: 10, alignSelf:'center'}}>
         <TextInput style={{borderRadius: 6, fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
-        placeholder= "Username"
+        placeholder= "Email"
         placeholderTextColor='#7D7B92'
-        onChangeText={text => setUsername(text)}
-        value={username}
+        onChangeText={text => setEmail(text)}
+        value={email}
         />
+        {emailError.length > 0 &&
+          <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#FF3B30', fontSize: 12, paddingLeft: 5, paddingTop: 8}}>{emailError}</Text>
+        }
       </View>
       <View style={{width: 320, alignSelf:'center', paddingTop: 16}}>
         <TextInput style={{borderRadius: 6, fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15, backgroundColor:'#FFFFFF', elevation: 5}}
@@ -308,17 +340,38 @@ function Login({ navigation }) {
         onChangeText={text => setPassword(text)}
         value={password}
         />
+        {passwordError.length > 0 &&
+          <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#FF3B30', fontSize: 12, paddingLeft: 5, paddingTop: 8}}>{passwordError}</Text>
+        }
       </View>
-      <View style={{width: 320, alignSelf:'center', paddingTop: 32}}>
+      <View style={{width: 320, alignSelf:'center', marginTop: 440, position: 'absolute', zIndex: 1}}>
         <TouchableOpacity onPress={()=> {
-          navigation.navigate('goHome')
-          }} 
+          handleSubmit()
+          if(email&&password){
+            auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(() => {
+            navigation.navigate('goHome')
+            setEmailPasswordErrorValidLogin("")
+            })
+            .catch((error) => {
+              if (error.code === 'auth/invalid-email' || error.code === 'auth/wrong-password') {
+                setEmailPasswordErrorValidLogin("Email atau password yang anda masukkan salah")
+              }            
+            })
+          }
+        }} 
           style={{backgroundColor: '#33D1C1', paddingVertical: 8, borderRadius: 10, elevation: 5}}>
           <Text style={{fontSize: 14, fontFamily: 'NotoSansTC-Bold-Alphabetic', color: 'white', textAlign: 'center'}}>LOGIN</Text>
         </TouchableOpacity>
       </View>
+      <View style={{paddingTop: 5, paddingLeft: 33}}>
+      {emailPasswordValidLogin &&
+          <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#FF3B30', fontSize: 12, paddingLeft: 5, paddingTop: 8}}>{emailPasswordErrorValidLogin}</Text>
+        }
+      </View>
       <TouchableOpacity>
-        <View style={{paddingLeft: 265, paddingTop: 16}}>
+        <View style={{paddingLeft: 265, paddingTop: 60}}>
           <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#757575', fontSize: 12}}>Lupa Password?</Text>
         </View>
       </TouchableOpacity>
@@ -376,6 +429,7 @@ function Register({ navigation }) {
         alamat: alamat,
         noHP: noHP,
         password: password,
+        TMPoint: 0
   })
       console.log('User account created & signed in!');
     })
@@ -444,6 +498,7 @@ function Register({ navigation }) {
         onPress={()=> {
           pushDataLogin()
           console.log("Id data", dataID)
+          navigation.navigate('Register Berhasil')
             }}
           >
           <Text style={{fontSize: 14, fontFamily: 'NotoSansTC-Bold-Alphabetic', color: 'white', textAlign: 'center'}}>Register</Text>
@@ -472,6 +527,30 @@ function Register({ navigation }) {
   );
 }
 
+function RegisterBerhasil({ navigation }) {
+  return (
+    <View style={{flex: 1, backgroundColor : '#E9FFFD', alignItems: 'center'}}>
+      <View style={{marginBottom: 20, paddingTop: 160}}>
+        <Image source={require('./assets/logo/berhasil.png')}/>
+      </View>
+      <View style={{}}>
+        <Text style={{fontSize: 24, color: '#424242', textAlign: 'center', fontFamily: 'ABeeZee-Regular'}}>Pendaftaran Berhasil</Text>
+      </View>
+      <View style={{paddingTop: 5}}>
+        <Text style={{fontSize: 16, color: '#7C7C7C', textAlign: 'center', fontFamily: 'ABeeZee-Regular'}}>Akun berhasil dibuat silahkan masuk</Text>
+      </View>
+      <View style={{alignSelf: 'center', paddingTop: 105}}>
+        <TouchableOpacity style={{backgroundColor: '#33D1C1', paddingVertical: 8, borderRadius: 10, width: 320, elevation: 10}} 
+        onPress={()=> {
+          navigation.navigate('Login')
+            }}
+          >
+          <Text style={{fontSize: 14, fontFamily: 'NotoSansTC-Bold-Alphabetic', color: 'white', textAlign: 'center'}}>LOGIN</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
 
 function HomeTabScreen() {
   return (
@@ -518,8 +597,22 @@ function HomeTabScreen() {
 
 function HomeScreen({ navigation }) {
   
-  //firebase.initializeApp(config);
-  //database().ref('/Users').push(global.TMPoints);
+  const [namaLengkap, setNamaLengkap] = React.useState()
+  const [TMPoint, setTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .on('value', snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setNamaLengkap(data.username)
+      setTMPoint(data.TMPoint)
+    });
+  }, [])
 
   
   return (
@@ -538,14 +631,14 @@ function HomeScreen({ navigation }) {
         <TouchableOpacity onPress={()=> {
             navigation.navigate('Notification')
             }}>
-            <Image source={require('./assets/icon/notification.png')}/>
           <View style={{ paddingRight: 25, paddingTop: 20}}>
+            <Image source={require('./assets/icon/notification.png')}/>
           </View>
         </TouchableOpacity>
       </View>
       <View style={{paddingHorizontal: 25}}>
         <View style={{paddingTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{ fontFamily: 'NotoSansTC-Bold-Alphabetic', color:'#554D4D', fontSize: 26}}>Hai, {global.Nama}</Text>
+          <Text style={{ fontFamily: 'NotoSansTC-Bold-Alphabetic', color:'#554D4D', fontSize: 26}}>Hai, {namaLengkap}</Text>
           <Image source={require('./assets/icon/profile-picture.png')}/>
         </View>
         <View style={{paddingTop: 55, position: 'absolute', paddingLeft: 25}}>
@@ -554,7 +647,7 @@ function HomeScreen({ navigation }) {
         <View style={{marginTop: 25, backgroundColor: '#DBF5F3', borderRadius: 4, borderWidth: 1, borderColor: '#A6A4A4'}}>
           <View style={{justifyContent:'space-between', flexDirection:'row', borderBottomWidth: 1, borderBottomColor: '#A6A4A4', paddingHorizontal: 20, marginTop: 10, paddingBottom: 10, marginBottom: 10}}>
             <Text style={{color:'#554D4D', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26}}>TM Points</Text>
-            <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26}}>{global.TMPoints}</Text>
+            <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26}}>{TMPoint}</Text>
           </View>
           <View style={{flexDirection:'row', justifyContent:'space-around'}}>
             <TouchableOpacity onPress={()=> {
@@ -639,9 +732,26 @@ function Sell({ navigation }) {
   );
 }
 
-function Share({ navigation }) {	
-  const [TMPoint, setTMPoint] = React.useState(0);
-  const [email, setEmail] = React.useState();
+function Share({ navigation }) {
+  const [namaLengkap, setNamaLengkap] = React.useState()	
+  const [TMPoint, setTMPoint] = React.useState()
+  const [sliderTMPoint, setSliderTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .once('value')
+    .then(snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setTMPoint(data.TMPoint)
+      setSliderTMPoint(data.TMPoint)
+      setNamaLengkap(data.username)
+    });
+  }, [])
 
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
@@ -658,7 +768,7 @@ function Share({ navigation }) {
       </View>
       <View style={{paddingHorizontal: 25, backgroundColor: '#7C7C7C', opacity: 0.5}}>
         <View style={{paddingTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{ fontFamily: 'NotoSansTC-Bold-Alphabetic', color:'#554D4D', fontSize: 26}}>Hai, Alvin Anandra</Text>
+          <Text style={{ fontFamily: 'NotoSansTC-Bold-Alphabetic', color:'#554D4D', fontSize: 26}}>Hai, {namaLengkap}</Text>
           <Image source={require('./assets/icon/profile-picture.png')}/>
         </View>
         <View style={{paddingTop: 55, position: 'absolute', paddingLeft: 25}}>
@@ -667,7 +777,7 @@ function Share({ navigation }) {
         <View style={{marginTop: 25, backgroundColor: '#DBF5F3', borderRadius: 4, borderWidth: 1, borderColor: '#A6A4A4'}}>
           <View style={{justifyContent:'space-between', flexDirection:'row', borderBottomWidth: 1, borderBottomColor: '#A6A4A4', paddingHorizontal: 20, marginTop: 10, paddingBottom: 10, marginBottom: 10}}>
             <Text style={{color:'#554D4D', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26}}>TM Points</Text>
-            <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26}}>500000</Text>
+            <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26}}>{TMPoint}</Text>
           </View>
           <View style={{flexDirection:'row', justifyContent:'space-around'}}>
               <Image source={require('./assets/icon/sell.png')}/>
@@ -710,19 +820,19 @@ function Share({ navigation }) {
             <Text style={{fontFamily: 'ABeeZee-Regular', fontSize: 14, color: '#7C7C7C'}}>Jumlah Points</Text>
           </View>
           <View style={{paddingTop: 10}}>
-            <Text style={{color:'#001311', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26, textAlign: 'center'}}>500000</Text>
+            <Text style={{color:'#001311', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26, textAlign: 'center'}}>{sliderTMPoint}</Text>
           </View>
           <View>
             <Slider
               style={{width: 200, height: 40}}
               minimumValue={0}
-              maximumValue={500000}
+              maximumValue={TMPoint}
               minimumTrackTintColor="#33D1C1"
               maximumTrackTintColor="#666666"
               step={1000}
               value={TMPoint}
               onValueChange={
-                (sliderValue) => setTMPoint(sliderValue)
+                (sliderValue) => setSliderTMPoint(sliderValue)
               }
               style={{width: 340, height: 40}}
             />
@@ -741,6 +851,15 @@ function Share({ navigation }) {
         <View style={{paddingTop: 25, marginBottom: 50}}>
           <TouchableOpacity style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, elevation: 5}} onPress={()=> {
             navigation.navigate('Share Berhasil')
+            let TMPointUpdate = TMPoint
+            TMPointUpdate = TMPointUpdate-sliderTMPoint
+            var user = auth().currentUser;
+            database()
+            .ref('users')
+            .child(user.uid)
+            .update({
+              TMPoint: TMPointUpdate,
+              })
             }}>
             <Text style={{fontSize: 14, color: 'white', textAlign: 'center', fontFamily: 'NotoSansTC-Regular-Alphabetic'}}>Kirim Sekarang</Text>
           </TouchableOpacity>
@@ -1960,6 +2079,22 @@ function History({ navigation }) {
 }
 
 function Account({ navigation }) {
+  const [namaLengkap, setNamaLengkap] = React.useState()
+  const [TMPoint, setTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .on('value', snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setNamaLengkap(data.username)
+      setTMPoint(data.TMPoint)
+    });
+  }, [])
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
         <View style={{borderBottomWidth: 1, borderBottomColor: 'rgba(166, 164, 164, 0.3)' }}>
@@ -1968,9 +2103,9 @@ function Account({ navigation }) {
       <View style={{paddingHorizontal: 25, marginTop: 25}}>
         <View style={{alignItems: 'center', backgroundColor: '#DBF5F3', paddingTop: 15, borderRadius: 10}}>
           <Image source={require('./assets/icon/profile-picture.png')}/>
-          <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26, marginTop: 3, paddingTop: 5, color: '#554D4D'}}>{global.NamaLengkap}</Text>
+          <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26, marginTop: 3, paddingTop: 5, color: '#554D4D'}}>{namaLengkap}</Text>
           <View style={{flexDirection: 'row', marginBottom: 15}}>
-            <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, marginTop: 3, paddingTop: 5, color: '#33D1C1'}}>{global.TMPoints} </Text>
+            <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, marginTop: 3, paddingTop: 5, color: '#33D1C1'}}>{TMPoint} </Text>
             <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, marginTop: 3, paddingTop: 5, color: '#766F6F'}}>Points</Text>
           </View>
         </View>
@@ -2067,8 +2202,6 @@ function Account({ navigation }) {
 
 function UbahProfil({ navigation }) {
   const [namaLengkap, setNamaLengkap] = React.useState()
-  const [jenisGender, setjenisGender] = React.useState()
-  const [tanggalLahir, setTanggalLahir] = React.useState()
   const [NoHandphone, setNoHandphone] = React.useState()
   const [email, setEmail] = React.useState()
   const [password, setPassword] = React.useState()
@@ -2076,35 +2209,22 @@ function UbahProfil({ navigation }) {
   const [data, setData] = React.useState()
 
   React.useEffect( () => {
+    var user = auth().currentUser;
     database()
-    .ref('/alvin-anandra-brilliandy')
+    .ref('users')
+    .child(user.uid)
     .once('value')
     .then(snapshot => {
-      console.log('User data: ', snapshot.val());
       let data=snapshot.val()
-      console.log(data.Alamat.alamat)
       setData(snapshot.val())
-      setNamaLengkap(data.Nama)
+      setNamaLengkap(data.username)
+      setNoHandphone(data.noHP)
+      setEmail(data.email)
+      setPassword(data.password)
+      setAlamat(data.alamat)
     });
   }, [])
-
-  var Alamat, Email, Nama, NoHP, Password, TanggalLahir = ''
-  var JenisKelamin = 0
-
-  const s = global.Password;
-
-function hideWord(w) {
-    if (w.length < 3) return w;
-    return w.substring(0, 2) + '*'.repeat(w.length-2);
-}
-
-const tampilanPassword = s.split(" ").map(hideWord).join(" ");
-
-  var jenisKelamin = [
-    {label: 'Laki - laki', value: 0 },
-    {label: 'Perempuan', value: 1 }
-  ];
-    
+   
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1, paddingHorizontal: 25}}>
       <ScrollView>
@@ -2121,7 +2241,7 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
             </View>
             <View style={{width: 340, paddingTop: 10}}>
               <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.31)', fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15}}
-              placeholder= {Nama}
+              placeholder= {namaLengkap}
               placeholderTextColor='#33D1C1'
               onChangeText={text => setNamaLengkap(text)}
               value={namaLengkap}
@@ -2129,37 +2249,14 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
             </View>
           </View>
           <View style={{paddingLeft: 15}}>
-            <Text style={{fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 14, paddingTop: 15, color: '#33D1C1'}}>Jenis Kelamin</Text>
-          </View>
-          <View style={{paddingHorizontal: 25, paddingTop: 10}}>
-            <RadioForm
-                radio_props={jenisKelamin}
-                initial={JenisKelamin}
-                formHorizontal={true}
-                labelHorizontal={true}
-                selectedButtonColor={'#33D1C1'}
-                animation={true}
-                onPress={(value) => {setjenisGender({value:value})}}
-            />
-          </View>
-          <View style={{paddingLeft: 15}}>
-            <Text style={{fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 14, paddingTop: 15, color: '#33D1C1'}}>Tanggal Lahir</Text>
-          </View>
-          <View style={{width: 340, paddingTop: 10}}>
-              <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.31)', fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15}}
-              placeholder= {TanggalLahir}
-              placeholderTextColor='#33D1C1'
-              onChangeText={text => setTanggalLahir(text)}
-              />
-          </View>
-          <View style={{paddingLeft: 15}}>
             <Text style={{fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 14, paddingTop: 15, color: '#33D1C1'}}>No Handphone</Text>
           </View>
           <View style={{width: 340, paddingTop: 10}}>
               <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.31)', fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15}}
-              placeholder= {NoHP}
+              placeholder= {NoHandphone}
               placeholderTextColor='#33D1C1'
               onChangeText={text => setNoHandphone(text)}
+              value={NoHandphone}
               />
           </View>
           <View style={{paddingLeft: 15}}>
@@ -2167,9 +2264,10 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
           </View>
           <View style={{width: 340, paddingTop: 10}}>
               <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.31)', fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15}}
-              placeholder= {Email}
+              placeholder= {email}
               placeholderTextColor='#33D1C1'
               onChangeText={text => setEmail(text)}
+              value={email}
               />
           </View>
           <View style={{paddingLeft: 15}}>
@@ -2177,10 +2275,11 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
           </View>
           <View style={{width: 340, paddingTop: 10}}>
               <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.31)', fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15}}
-              placeholder= {tampilanPassword}
+              placeholder= {password}
               placeholderTextColor='#33D1C1'
               secureTextEntry= {true}
               onChangeText={text => setPassword(text)}
+              value={password}
               />
           </View>
           <View style={{paddingLeft: 15}}>
@@ -2188,25 +2287,25 @@ const tampilanPassword = s.split(" ").map(hideWord).join(" ");
           </View>
           <View style={{width: 340, paddingTop: 10, marginBottom: 25}}>
               <TextInput style={{borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.31)', fontSize: 14, fontFamily: 'NotoSansTC-Medium-Alphabetic', paddingLeft: 15}}
-              placeholder= {Alamat}
+              placeholder= {alamat}
               placeholderTextColor='#33D1C1'
               onChangeText={text => setAlamat(text)}
+              value={alamat}
               />
           </View>
           <View style={{marginBottom: 25}}>
             <TouchableOpacity
               onPress={()=> {
-                console.log(alamat)
+                var user = auth().currentUser;
                 database()
-                .ref('/alvin-anandra-brilliandy')
+                .ref('users')
+                .child(user.uid)
                 .update({
-                Alamat: {alamat},
-                Email: {email},
-                JenisKelamin: {jenisGender},
-                NamaLengkap: {namaLengkap},
-                NoHP: {NoHandphone},
-                Password: {password},
-                TanggalLahir: {tanggalLahir}
+                  alamat: alamat,
+                  email: email,
+                  username: namaLengkap,
+                  noHP: NoHandphone,
+                  password: password,
                 })
                 navigation.navigate('Edit Profil Berhasil')
                 }}
