@@ -76,6 +76,18 @@ function App() {
             textAlign: 'center', 
             fontFamily: 'NotoSansTC-Bold-Alphabetic', 
             color:'#554D4D', 
+            fontSize: 20
+
+          },
+          headerTitleAlign:'center',
+          }} name="Bank Sampah Wijaya Kusuma" component={BankSampahWijayaKusuma} />
+        <Stack.Screen options={{headerStyle: {
+            backgroundColor: '#E9FFFD',
+          },
+          headerTitleStyle:{
+            textAlign: 'center', 
+            fontFamily: 'NotoSansTC-Bold-Alphabetic', 
+            color:'#554D4D', 
             fontSize: 26
 
           },
@@ -413,7 +425,6 @@ function Register({ navigation }) {
     //Password: password,
     //}).then(data => {  
       
-  var dataID = ''
 
   function pushDataLogin(){
       auth()
@@ -429,8 +440,12 @@ function Register({ navigation }) {
         alamat: alamat,
         noHP: noHP,
         password: password,
-        TMPoint: 0
-  })
+        TMPoint: 0,
+        sampahPlastik: 0,
+        sampahKaca: 0,
+        sampahKertas: 0,
+        totalTMPoint:0
+       })
       console.log('User account created & signed in!');
     })
     .catch(error => {
@@ -497,7 +512,6 @@ function Register({ navigation }) {
         <TouchableOpacity style={{backgroundColor: '#33D1C1', paddingVertical: 8, borderRadius: 10, width: 320, elevation: 10}} 
         onPress={()=> {
           pushDataLogin()
-          console.log("Id data", dataID)
           navigation.navigate('Register Berhasil')
             }}
           >
@@ -565,20 +579,20 @@ function HomeTabScreen() {
       }}
       />
       <Tab.Screen 
-      name="My Order" 
-      component={MyOrder} 
+      name="Feed" 
+      component={Feed} 
       options={{
         tabBarIcon: ({focused}) => (
-          <Icon name="exchange" color={focused ? "#33D1C1" : "#524848"} size={26} />
+          <Icon name="list-alt" color={focused ? "#33D1C1" : "#524848"} size={26} />
         ),
       }}
       />
       <Tab.Screen 
-      name="History" 
-      component={History} 
+      name="Statistic" 
+      component={Statistic} 
       options={{
         tabBarIcon: ({focused}) => (
-          <Icon name="history" color={focused ? "#33D1C1" : "#524848"} size={26} />
+          <Icon name="bar-chart" color={focused ? "#33D1C1" : "#524848"} size={26} />
         ),
       }}
       />
@@ -752,7 +766,7 @@ function Share({ navigation }) {
       setNamaLengkap(data.username)
     });
   }, [])
-
+  
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'rgba(166, 164, 164, 0.3)', backgroundColor: '#7C7C7C', opacity: 0.5}}>
@@ -1179,11 +1193,42 @@ function ShareBerhasil({ navigation }) {
 }
 
 function DropOff({ navigation }) {
-  const [sampahPlastik, setSampahPlastik] = React.useState()
-  const [sampahKertas, setSampahKertas] = React.useState()
-  const [sampahKaca, setSampahKaca] = React.useState()
-  const [sampahElektronik, setSampahElektronik] = React.useState()
+  const [sampahPlastik, setSampahPlastik] = React.useState(0)
+  const [sampahKertas, setSampahKertas] = React.useState(0)
+  const [sampahKaca, setSampahKaca] = React.useState(0)
+  const [sampahElektronik, setSampahElektronik] = React.useState(0)
 
+  const [TMPoint, setTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .once('value')
+    .then(snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setTMPoint(data.TMPoint)
+    });
+  }, [])
+
+  function hitungNilaiSampah(){
+    var TMPointSekarang = TMPoint
+    var totalNilaiSampah = 0
+
+    totalNilaiSampah = (sampahPlastik * 5000) + (sampahKertas * 8000) + (sampahKaca * 10000) + (sampahElektronik * 20000)
+    TMPointSekarang = TMPointSekarang + totalNilaiSampah
+
+    var user = auth().currentUser;
+      database()
+      .ref('users')
+      .child(user.uid)
+      .update({
+        TMPoint: TMPointSekarang,
+      })
+  }
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{paddingHorizontal: 25}}>
@@ -1271,6 +1316,7 @@ function DropOff({ navigation }) {
         </View>
         <View style={{paddingTop: 90}}>
           <TouchableOpacity style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, elevation: 5}} onPress={()=> {
+            hitungNilaiSampah()
             navigation.navigate('Drop Off Diproses')
             }}>
             <Text style={{fontSize: 14, color: 'white', textAlign: 'center', fontFamily: 'NotoSansTC-Regular-Alphabetic'}}>Lanjut</Text>
@@ -1319,7 +1365,7 @@ function DropOffInfo({ navigation }) {
   const [sampahKertas, setSampahKertas] = React.useState()
   const [sampahKaca, setSampahKaca] = React.useState()
   const [sampahElektronik, setSampahElektronik] = React.useState()
-
+  
   return (
     <View style={{}}>
       <View style={{paddingHorizontal: 25, backgroundColor : '#E9FFFD', backgroundColor: '#7C7C7C', opacity: 0.5}}>
@@ -1475,6 +1521,38 @@ function PickUp({ navigation }) {
   const [noHP, setNoHP] = React.useState()
   const [noAlamat, setAlamat] = React.useState()
 
+  const [TMPoint, setTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .once('value')
+    .then(snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setTMPoint(data.TMPoint)
+    });
+  }, [])
+
+  function hitungNilaiSampah(){
+    var TMPointSekarang = TMPoint
+    var totalNilaiSampah = 0
+
+    totalNilaiSampah = (sampahPlastik * 4000) + (sampahKertas * 7000) + (sampahKaca * 90000) + (sampahElektronik * 19000)
+    TMPointSekarang = TMPointSekarang + totalNilaiSampah
+
+    var user = auth().currentUser;
+      database()
+      .ref('users')
+      .child(user.uid)
+      .update({
+        TMPoint: TMPointSekarang,
+      })
+  }
+
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{paddingHorizontal: 25}}>
@@ -1597,6 +1675,7 @@ function PickUp({ navigation }) {
         </View>
         <View style={{paddingTop: 25}}>
           <TouchableOpacity style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, elevation: 5}} onPress={()=> {
+            hitungNilaiSampah()
             navigation.navigate('Pick Up Diproses')
             }}>
             <Text style={{fontSize: 14, color: 'white', textAlign: 'center', fontFamily: 'NotoSansTC-Regular-Alphabetic'}}>Lanjut</Text>
@@ -1923,32 +2002,84 @@ function Lokasi({ navigation }) {
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{}}>
-        <View style={{paddingTop: 20, flexDirection: 'row', paddingHorizontal: 20, borderBottomColor: '#A6A4A4', borderBottomWidth: 1, paddingBottom: 20}}>
-          <Image source={require('./assets/dummy/lokasi-1.png')}/>
-          <View style={{paddingLeft: 10}}>
-            <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Bank Sampah Wijaya Kusuma</Text>
-            <Text style={{fontSize: 11, lineHeight: 25}} >Jl.Teuku Cik Ditiro II No.5 RT.1/RW2,{"\n"}Gondangdia, Kec. Menteng, Kota Jakarta{"\n"}Pusat, Daerah Khusus Ibukota Jakarta{"\n"}10350</Text>
+        <TouchableOpacity onPress={()=> {
+            navigation.navigate('Bank Sampah Wijaya Kusuma')
+            }}>
+          <View style={{paddingTop: 20, flexDirection: 'row', paddingHorizontal: 20, borderBottomColor: '#A6A4A4', borderBottomWidth: 1, paddingBottom: 20}}>
+            <Image source={require('./assets/dummy/lokasi-1.png')}/>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Bank Sampah Wijaya Kusuma</Text>
+              <Text style={{fontSize: 11, lineHeight: 25}} >Jl.Teuku Cik Ditiro II No.5 RT.1/RW2,{"\n"}Gondangdia, Kec. Menteng, Kota Jakarta{"\n"}Pusat, Daerah Khusus Ibukota Jakarta{"\n"}10350</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <View style={{paddingTop: 20, flexDirection: 'row', paddingHorizontal: 20, borderBottomColor: '#A6A4A4', borderBottomWidth: 1, paddingBottom: 20}}>
+            <Image source={require('./assets/dummy/lokasi-2.png')}/>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Bank Sampah Melati Bersih</Text>
+              <Text style={{fontSize: 11, lineHeight: 25}} >Perumahan Ciputat Baru. Jl. Flamboyan{"\n"}RT 02/RW06, Kelurahan Sawah, Ciputat{"\n"}Tangerang Selatan</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <View style={{paddingTop: 20, flexDirection: 'row', paddingHorizontal: 20, borderBottomColor: '#A6A4A4', borderBottomWidth: 1, paddingBottom: 20}}>
+            <Image source={require('./assets/dummy/lokasi-3.png')}/>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Bank Sampah Induk Hijau Lestari</Text>
+              <Text style={{fontSize: 11, lineHeight: 25}} >Jl. Jendral Ahmad Yani No.752, Cicaheum,{"\n"}Kec. Kiaracondong, Kota Bandung, Jawa{"\n"}Barat 40282</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <View style={{paddingTop: 20, flexDirection: 'row', paddingHorizontal: 20, borderBottomColor: '#A6A4A4', borderBottomWidth: 1, paddingBottom: 20}}>
+            <Image source={require('./assets/dummy/lokasi-4.png')}/>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Bank Sampah Babakan Ciamis</Text>
+              <Text style={{fontSize: 11, lineHeight: 25}} >Jl. Babakan Ciamis No.109, Babakan{"\n"}Ciamis, Kec. Sumur Bandung, Kota{"\n"}Bandung, Jawa Barat 40117</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+function BankSampahWijayaKusuma({ navigation }) {
+  return (
+    <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
+      <View style={{paddingTop: 10}}>
+        <View style={{backgroundColor: '#C4C4C4'}}>
+          <Text style={{fontWeight: 'bold', textAlign: 'center', color: '#000', fontSize: 14}}>Bank Sampah Wijaya Kusuma</Text>
+          <Text style={{fontWeight: '400', textAlign: 'center', color: '#000', fontSize: 14}}>Jl. Teuku Cik Ditiro II No.5, RT.1/RW.2, Gondangdia, Kec. Menteng, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10350</Text>
+        </View>
+        <View style={{paddingTop: 10}}>
+          <Image style={{height: 320}} source={require('./assets/dummy/map-wijayakusuma.png')}/>
+        </View>
+        <View style={{borderBottomWidth:1, paddingTop: 10, opacity: 0.5, borderBottomColor: '#A6A4A4'}}></View>
+        <View style={{paddingTop: 10}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <Image source={require('./assets/dummy/wijayakusuma.png')}/>
+            <Image source={require('./assets/dummy/add-foto.png')}/>
           </View>
         </View>
-        <View style={{paddingTop: 20, flexDirection: 'row', paddingHorizontal: 20, borderBottomColor: '#A6A4A4', borderBottomWidth: 1, paddingBottom: 20}}>
-          <Image source={require('./assets/dummy/lokasi-2.png')}/>
-          <View style={{paddingLeft: 10}}>
-            <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Bank Sampah Melati Bersih</Text>
-            <Text style={{fontSize: 11, lineHeight: 25}} >Perumahan Ciputat Baru. Jl. Flamboyan{"\n"}RT 02/RW06, Kelurahan Sawah, Ciputat{"\n"}Tangerang Selatan</Text>
+        <View style={{paddingLeft: 15}}>
+          <View style={{flexDirection: 'row', paddingTop: 10}}>
+            <Image source={require('./assets/icon/profile-ari.png')}/>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{fontWeight: 'bold', textAlign: 'center', color: '#000', fontSize: 14}}>Ari Cahya Saputra</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{textAlign: 'center', color: '#686565', fontSize: 10}}>Local Guide</Text>
+                <Text style={{textAlign: 'center', color: '#686565', fontSize: 10}}>. 125 ulasan</Text>
+              </View>
+            </View>
           </View>
-        </View>
-        <View style={{paddingTop: 20, flexDirection: 'row', paddingHorizontal: 20, borderBottomColor: '#A6A4A4', borderBottomWidth: 1, paddingBottom: 20}}>
-          <Image source={require('./assets/dummy/lokasi-3.png')}/>
-          <View style={{paddingLeft: 10}}>
-            <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Bank Sampah Induk Hijau Lestari</Text>
-            <Text style={{fontSize: 11, lineHeight: 25}} >Jl. Jendral Ahmad Yani No.752, Cicaheum,{"\n"}Kec. Kiaracondong, Kota Bandung, Jawa{"\n"}Barat 40282</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Image source={require('./assets/icon/bintang.png')}/>
+            <Text style={{color: '#686565', fontSize: 10, paddingTop: 3, paddingLeft: 8}}>1 Bulan lalu</Text>
           </View>
-        </View>
-        <View style={{paddingTop: 20, flexDirection: 'row', paddingHorizontal: 20, borderBottomColor: '#A6A4A4', borderBottomWidth: 1, paddingBottom: 20}}>
-          <Image source={require('./assets/dummy/lokasi-4.png')}/>
-          <View style={{paddingLeft: 10}}>
-            <Text style={{color:'#524848', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Bank Sampah Babakan Ciamis</Text>
-            <Text style={{fontSize: 11, lineHeight: 25}} >Jl. Babakan Ciamis No.109, Babakan{"\n"}Ciamis, Kec. Sumur Bandung, Kota{"\n"}Bandung, Jawa Barat 40117</Text>
+          <View>
+            <Text style={{fontWeight: '400', color: '#000', fontSize: 12, paddingTop: 5}}>Bank Sampah bagus, cuman tempat lumayan jauh</Text>
           </View>
         </View>
       </View>
@@ -2015,7 +2146,7 @@ function Event({ navigation }) {
   );
 }
 
-function MyOrder({ navigation }) {
+function Feed({ navigation }) {
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{borderBottomWidth: 1, borderBottomColor: 'rgba(166, 164, 164, 0.3)'}}>
@@ -2043,35 +2174,60 @@ function MyOrder({ navigation }) {
   );
 }
 
-function History({ navigation }) {
+function Statistic({ navigation }) {
   return (
     <ScrollView  style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{borderBottomWidth: 1, borderBottomColor: 'rgba(166, 164, 164, 0.3)' }}>
         <Text style={{ fontFamily: 'Oswald-SemiBold', color:'#33D1C1', fontSize: 36, textAlign: 'center'}}>TrashMon</Text>
       </View>
-      <View>
-        <View style={{ marginLeft: 10, paddingLeft: 5, flexDirection: 'row', paddingTop: 25}}>
-          <Image source={require('./assets/icon/history-centang.png')}/>
-          <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 13, marginLeft: 10, marginTop: 3, paddingTop: 5}}>Sampah anda sudah sampai{"\n"}poin anda sudah ditambahkan</Text>
+      <View style={{paddingHorizontal: 25}}>
+        <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26, marginTop: 3, paddingTop: 25, color: '#554D4D'}}>Statistik Daur Ulang</Text>
+        <View>
+          <Text style={{fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 13, marginTop: 3, paddingTop: 5, color: '#524848', paddingBottom: 15}}>Kamu keren, berikut hasil usaha daur ulangmu bersama TrashMon</Text>
         </View>
-      </View>
-      <View>
-        <View style={{ marginLeft: 10, paddingLeft: 5, flexDirection: 'row', paddingTop: 15}}>
-          <Image source={require('./assets/icon/history-centang.png')}/>
-          <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 13, marginLeft: 10, marginTop: 3, paddingTop: 5}}>Sampah anda sudah diambil agen kami{"\n"}poin anda sudah ditambahkan</Text>
+        <View style={{paddingTop: 20}}>
+          <View style={{zIndex: 1, flexDirection: 'row', marginLeft: 10}}>
+            <Image style={{position: 'absolute'}} source={require('./assets/icon/botol.png')}/>
+            <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 16, color: '#FFF', paddingLeft: 45, paddingTop: 3}}>Kaca</Text>
+            <View>
+              <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 36, color: '#FFF', paddingLeft: 145, paddingTop: 50}}>20</Text>
+              <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 18, color: '#FFF', paddingLeft: 130, paddingTop: 90}}>Kilogram</Text>
+            </View>
+          </View>
+          <Image style={{width: 340, borderRadius: 10, position: 'absolute'}} source={require('./assets/dummy/kaca.png')}/>
         </View>
-      </View>
-
-      <View>
-        <View style={{ marginLeft: 10, paddingLeft: 5, flexDirection: 'row', paddingTop: 15}}>
-          <Image source={require('./assets/icon/history-centang.png')}/>
-          <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 13, marginLeft: 10, marginTop: 3, paddingTop: 5}}>Poin yang anda kirim telah berhasil{"\n"}aricahya@gmail.com berterima kasih</Text>
+        <View style={{paddingTop: 180}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View>
+              <Image style={{width: 165, borderRadius: 10}} source={require('./assets/dummy/kertas.png')}/>
+              <View style={{position: 'absolute', flexDirection: 'row'}}>
+                <Image style={{position: 'absolute', marginLeft: 10, marginTop: 10}} source={require('./assets/icon/koran.png')}/>
+                <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 16, color: '#FFF', paddingLeft: 35, paddingTop: 14}}>Kertas</Text>
+                <View>
+                  <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 36, color: '#FFF', paddingLeft: 65, paddingTop: 50}}>20</Text>
+                  <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 18, color: '#FFF', paddingLeft: 50, paddingTop: 90}}>Kilogram</Text>
+                </View>
+              </View>
+            </View>
+            <View>
+              <Image style={{width: 165, borderRadius: 10}} source={require('./assets/dummy/plastik.png')}/>
+              <View style={{position: 'absolute', flexDirection: 'row'}}>
+                <Image style={{position: 'absolute', marginLeft: 10, marginTop: 10}} source={require('./assets/icon/botol-plastik.png')}/>
+                <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 16, color: '#FFF', paddingLeft: 35, paddingTop: 14}}>Plastik</Text>
+                <View>
+                  <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 36, color: '#FFF', paddingLeft: 65, paddingTop: 50}}>20</Text>
+                  <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 18, color: '#FFF', paddingLeft: 50, paddingTop: 90}}>Kilogram</Text>
+                </View>
+              </View>
+            </View>
+          </View>
         </View>
-      </View>
-      <View>
-        <View style={{ marginLeft: 10, paddingLeft: 5, flexDirection: 'row', paddingTop: 15}}>
-          <Image source={require('./assets/icon/history-centang.png')}/>
-          <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 13, marginLeft: 10, marginTop: 3, paddingTop: 5}}>Poin anda sudah di redeem ke Dompet Dhuafa{"\n"}kumpulkan lebih banyak dan redeem lagi</Text>
+        <View style={{backgroundColor: '#FFF', marginTop: 25, borderRadius: 10, elevation: 10, marginBottom: 20}}>
+          <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 20, paddingTop: 10, color: '#554D4D', textAlign: 'center'}}>Total Point yang kamu dapatkan</Text>
+          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 20, paddingTop: 15, color: '#554D4D', textAlign: 'center', paddingBottom: 15, color: '#33D1C1'}}>20000000 </Text>
+            <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 20, paddingTop: 15, color: '#554D4D', textAlign: 'center', paddingBottom: 15}}>TMPoints</Text>
+          </View>
         </View>
       </View>
     </ScrollView>
