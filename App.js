@@ -12,16 +12,6 @@ import auth from '@react-native-firebase/auth';
 //import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 
 
-global.TMPoints = 500000
-global.Nama = 'Ari Cahya'
-global.NamaLengkap = 'Alvin Anandra Brilliandy'
-global.TanggalLahir = '05 Februari 2001'
-global.NoHP = '08663129928'
-global.Email = 'alvinanandra@gmail.com'
-global.Password = 'bebas'
-global.Alamat = 'Bandung'
-global.JenisKelamin = 0
-
 //database()
   //.ref('/Users')
   //.update({
@@ -81,6 +71,42 @@ function App() {
           },
           headerTitleAlign:'center',
           }} name="Bank Sampah Wijaya Kusuma" component={BankSampahWijayaKusuma} />
+          <Stack.Screen options={{headerStyle: {
+            backgroundColor: '#E9FFFD',
+          },
+          headerTitleStyle:{
+            textAlign: 'center', 
+            fontFamily: 'NotoSansTC-Bold-Alphabetic', 
+            color:'#554D4D', 
+            fontSize: 20
+
+          },
+          headerTitleAlign:'center',
+          }} name="Bank Sampah Melati" component={BankSampahMelati} />
+          <Stack.Screen options={{headerStyle: {
+            backgroundColor: '#E9FFFD',
+          },
+          headerTitleStyle:{
+            textAlign: 'center', 
+            fontFamily: 'NotoSansTC-Bold-Alphabetic', 
+            color:'#554D4D', 
+            fontSize: 20
+
+          },
+          headerTitleAlign:'center',
+          }} name="Bank Sampah Hijau Lestari" component={BankHijauLestari} />
+          <Stack.Screen options={{headerStyle: {
+            backgroundColor: '#E9FFFD',
+          },
+          headerTitleStyle:{
+            textAlign: 'center', 
+            fontFamily: 'NotoSansTC-Bold-Alphabetic', 
+            color:'#554D4D', 
+            fontSize: 20
+
+          },
+          headerTitleAlign:'center',
+          }} name="Bank Sampah Babakan Ciamis" component={BankBabakanCiamis} />
         <Stack.Screen options={{headerStyle: {
             backgroundColor: '#E9FFFD',
           },
@@ -283,14 +309,13 @@ function App() {
 }
 
 function SplashScreen({ navigation }) {
+  setTimeout(() => {
+    navigation.navigate('Login'); 
+}, 3000)
   return (
-    <TouchableOpacity onPress={()=> {
-      navigation.navigate('Login')
-      }}>  
-      <View style={{backgroundColor : '#E9FFFD', flex: 1, alignSelf: 'center', justifyContent: 'center', paddingHorizontal: 100}}>
-        <Image source={require('./assets/logo/trashmon.png')}/>
-      </View>
-    </TouchableOpacity>
+    <View style={{backgroundColor : '#E9FFFD', flex: 1, alignSelf: 'center', justifyContent: 'center', paddingHorizontal: 100}}>
+      <Image source={require('./assets/logo/trashmon.png')}/>
+    </View>
   );
 }
 
@@ -382,24 +407,7 @@ function Login({ navigation }) {
           <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#FF3B30', fontSize: 12, paddingLeft: 5, paddingTop: 8}}>{emailPasswordErrorValidLogin}</Text>
         }
       </View>
-      <TouchableOpacity>
-        <View style={{paddingLeft: 265, paddingTop: 60}}>
-          <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#757575', fontSize: 12}}>Lupa Password?</Text>
-        </View>
-      </TouchableOpacity>
-      <View style={{paddingTop: 36}}>
-        <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#757575', fontSize: 12, textAlign: 'center'}}>Atau masuk dengan</Text>
-      </View>
-      <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 16}}>
-        <TouchableOpacity onPress={()=> {
-          }}>
-          <Image source={require('./assets/icon/facebook.png')}/>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image style={{marginLeft: 25}} source={require('./assets/icon/gmail.png')}/>
-        </TouchableOpacity>
-      </View>
-      <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 72}}>
+      <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 170}}>
         <Text style={{ fontFamily: 'NotoSansTC-Medium-Alphabetic', color:'#757575', fontSize: 12, textAlign: 'center'}}>Tidak punya akun?</Text>
         <TouchableOpacity onPress={()=> {
           navigation.navigate('Register')
@@ -653,7 +661,7 @@ function HomeScreen({ navigation }) {
       <View style={{paddingHorizontal: 25}}>
         <View style={{paddingTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={{ fontFamily: 'NotoSansTC-Bold-Alphabetic', color:'#554D4D', fontSize: 26}}>Hai, {namaLengkap}</Text>
-          <Image source={require('./assets/icon/profile-picture.png')}/>
+          <Image source={require('./assets/icon/user-profile.png')}/>
         </View>
         <View style={{paddingTop: 55, position: 'absolute', paddingLeft: 25}}>
           <Text style={{ fontFamily: 'ABeeZee-Regular', color:'#7C7C7C', fontSize: 16}}>Mari peduli lingkungan dan tukarkan sampahmu !</Text>
@@ -747,7 +755,8 @@ function Sell({ navigation }) {
 }
 
 function Share({ navigation }) {
-  const [namaLengkap, setNamaLengkap] = React.useState()	
+  const [namaLengkap, setNamaLengkap] = React.useState()
+  const [email, setEmail] = React.useState()	
   const [TMPoint, setTMPoint] = React.useState()
   const [sliderTMPoint, setSliderTMPoint] = React.useState()
   const [data, setData] = React.useState()
@@ -783,7 +792,7 @@ function Share({ navigation }) {
       <View style={{paddingHorizontal: 25, backgroundColor: '#7C7C7C', opacity: 0.5}}>
         <View style={{paddingTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={{ fontFamily: 'NotoSansTC-Bold-Alphabetic', color:'#554D4D', fontSize: 26}}>Hai, {namaLengkap}</Text>
-          <Image source={require('./assets/icon/profile-picture.png')}/>
+          <Image source={require('./assets/icon/user-profile.png')}/>
         </View>
         <View style={{paddingTop: 55, position: 'absolute', paddingLeft: 25}}>
           <Text style={{ fontFamily: 'ABeeZee-Regular', color:'#7C7C7C', fontSize: 16}}>Mari peduli lingkungan dan tukarkan sampahmu !</Text>
@@ -859,21 +868,26 @@ function Share({ navigation }) {
               placeholder= "Masukkan alamat email penerima"
               placeholderTextColor='#7C7C7C'
               onChangeText={text => setEmail(text)}
+              value={email}
               />
           </View>
         </View>
         <View style={{paddingTop: 25, marginBottom: 50}}>
           <TouchableOpacity style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, elevation: 5}} onPress={()=> {
-            navigation.navigate('Share Berhasil')
-            let TMPointUpdate = TMPoint
-            TMPointUpdate = TMPointUpdate-sliderTMPoint
-            var user = auth().currentUser;
-            database()
-            .ref('users')
-            .child(user.uid)
-            .update({
+            if(email){
+              navigation.navigate('Share Berhasil')
+              let TMPointUpdate = TMPoint
+              TMPointUpdate = TMPointUpdate-sliderTMPoint
+              var user = auth().currentUser;
+              database()
+              .ref('users')
+              .child(user.uid)
+              .update({
               TMPoint: TMPointUpdate,
               })
+            }else{
+              alert("Alamat email kosong, mohon isi alamat email")
+            }
             }}>
             <Text style={{fontSize: 14, color: 'white', textAlign: 'center', fontFamily: 'NotoSansTC-Regular-Alphabetic'}}>Kirim Sekarang</Text>
           </TouchableOpacity>
@@ -884,12 +898,26 @@ function Share({ navigation }) {
 }
 
 function Redeem({ navigation }) {
+  const [TMPoint, setTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .on('value', snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setTMPoint(data.TMPoint)
+    });
+  }, [])
   return (
     <ScrollView style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{paddingHorizontal: 25}}>
         <View style={{justifyContent:'space-between', flexDirection:'row', paddingHorizontal: 20, paddingTop: 10, paddingBottom: 10, marginBottom: 10, backgroundColor: '#FDF9F9', marginTop: 25, borderRadius: 6, elevation: 5}}>
           <Text style={{color:'#554D4D', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26}}>TM Points</Text>
-          <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26}}>{global.TMPoints}</Text>
+          <Text style={{color:'#33D1C1', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26}}>{TMPoint}</Text>
         </View>
         <View>
           <View style={{marginTop: 15, backgroundColor: '#FFFFFF', marginBottom: 30}}>
@@ -989,6 +1017,34 @@ function Redeem({ navigation }) {
 }
 
 function RedeemPegadaian({ navigation }) {
+  const [TMPoint, setTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .on('value', snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setTMPoint(data.TMPoint)
+    });
+  }, [])
+
+  function hitungNilaiSampah(){
+    var TMPointSekarang = TMPoint
+
+    TMPointSekarang = TMPointSekarang - 15000
+
+    var user = auth().currentUser;
+      database()
+      .ref('users')
+      .child(user.uid)
+      .update({
+        TMPoint: TMPointSekarang
+      })
+  }
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{paddingHorizontal: 25}}>
@@ -1018,11 +1074,16 @@ function RedeemPegadaian({ navigation }) {
           <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10}}>
             <View style={{paddingLeft: 10}}>
               <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>15.000 TS Points</Text>
-              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : 500.000</Text>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : {TMPoint}</Text>
             </View>
             <View style={{paddingTop: 5, paddingRight: 10}}>
               <TouchableOpacity onPress={()=> {
+                if(TMPoint>=15000){
+                  hitungNilaiSampah()
                   navigation.navigate('Redeem Berhasil')
+                }else{
+                  alert("Mohon maaf Saldo anda kurang untuk melakukan transaksi ini")
+                }
                   }} >
                 <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Tukar Sekarang</Text>
               </TouchableOpacity>
@@ -1035,6 +1096,34 @@ function RedeemPegadaian({ navigation }) {
 }
 
 function RedeemShopeePay({ navigation }) {
+  const [TMPoint, setTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .on('value', snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setTMPoint(data.TMPoint)
+    });
+  }, [])
+
+  function hitungNilaiSampah(){
+    var TMPointSekarang = TMPoint
+
+    TMPointSekarang = TMPointSekarang - 10000
+
+    var user = auth().currentUser;
+      database()
+      .ref('users')
+      .child(user.uid)
+      .update({
+        TMPoint: TMPointSekarang
+      })
+  }
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{paddingHorizontal: 25}}>
@@ -1048,11 +1137,16 @@ function RedeemShopeePay({ navigation }) {
           <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10}}>
             <View style={{paddingLeft: 10}}>
               <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>10.000 TS Points</Text>
-              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : 500.000</Text>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : {TMPoint}</Text>
             </View>
             <View style={{paddingTop: 5, paddingRight: 10}}>
               <TouchableOpacity onPress={()=> {
-                  navigation.navigate('Redeem Berhasil')
+                  if(TMPoint>=10000){
+                    hitungNilaiSampah()
+                    navigation.navigate('Redeem Berhasil')
+                  }else{
+                    alert("Mohon maaf Saldo anda kurang untuk melakukan transaksi ini")
+                  }
                   }}>
                 <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Tukar Sekarang</Text>
               </TouchableOpacity>
@@ -1065,6 +1159,34 @@ function RedeemShopeePay({ navigation }) {
 }
 
 function RedeemOVO({ navigation }) {
+  const [TMPoint, setTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .on('value', snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setTMPoint(data.TMPoint)
+    });
+  }, [])
+
+  function hitungNilaiSampah(){
+    var TMPointSekarang = TMPoint
+
+    TMPointSekarang = TMPointSekarang - 10000
+
+    var user = auth().currentUser;
+      database()
+      .ref('users')
+      .child(user.uid)
+      .update({
+        TMPoint: TMPointSekarang
+      })
+  }
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{paddingHorizontal: 25}}>
@@ -1078,11 +1200,16 @@ function RedeemOVO({ navigation }) {
           <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10}}>
             <View style={{paddingLeft: 10}}>
               <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>10.000 TS Points</Text>
-              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : 500.000</Text>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : {TMPoint}</Text>
             </View>
             <View style={{paddingTop: 5, paddingRight: 10}}>
               <TouchableOpacity onPress={()=> {
-                  navigation.navigate('Redeem Berhasil')
+                  if(TMPoint>=10000){
+                    hitungNilaiSampah()
+                    navigation.navigate('Redeem Berhasil')
+                  }else{
+                    alert("Mohon maaf Saldo anda kurang untuk melakukan transaksi ini")
+                  }
                   }}>
                 <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Tukar Sekarang</Text>
               </TouchableOpacity>
@@ -1095,6 +1222,34 @@ function RedeemOVO({ navigation }) {
 }
 
 function RedeemGoPay({ navigation }) {
+  const [TMPoint, setTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .on('value', snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setTMPoint(data.TMPoint)
+    });
+  }, [])
+
+  function hitungNilaiSampah(){
+    var TMPointSekarang = TMPoint
+
+    TMPointSekarang = TMPointSekarang - 10000
+
+    var user = auth().currentUser;
+      database()
+      .ref('users')
+      .child(user.uid)
+      .update({
+        TMPoint: TMPointSekarang
+      })
+  }
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{paddingHorizontal: 25}}>
@@ -1108,11 +1263,16 @@ function RedeemGoPay({ navigation }) {
           <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10}}>
             <View style={{paddingLeft: 10}}>
               <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>10.000 TS Points</Text>
-              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : 500.000</Text>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : {TMPoint}</Text>
             </View>
             <View style={{paddingTop: 5, paddingRight: 10}}>
               <TouchableOpacity onPress={()=> {
-                  navigation.navigate('Redeem Berhasil')
+                  if(TMPoint>=10000){
+                    hitungNilaiSampah()
+                    navigation.navigate('Redeem Berhasil')
+                  }else{
+                    alert("Mohon maaf Saldo anda kurang untuk melakukan transaksi ini")
+                  }
                   }}>
                 <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Tukar Sekarang</Text>
               </TouchableOpacity>
@@ -1125,6 +1285,34 @@ function RedeemGoPay({ navigation }) {
 }
 
 function RedeemDompetDhuafa({ navigation }) {
+  const [TMPoint, setTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .on('value', snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setTMPoint(data.TMPoint)
+    });
+  }, [])
+
+  function hitungNilaiSampah(){
+    var TMPointSekarang = TMPoint
+
+    TMPointSekarang = TMPointSekarang - 10000
+
+    var user = auth().currentUser;
+      database()
+      .ref('users')
+      .child(user.uid)
+      .update({
+        TMPoint: TMPointSekarang
+      })
+  }
   return (
     <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{paddingHorizontal: 25}}>
@@ -1138,11 +1326,16 @@ function RedeemDompetDhuafa({ navigation }) {
           <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10}}>
             <View style={{paddingLeft: 10}}>
               <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>10.000 TS Points</Text>
-              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : 500.000</Text>
+              <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 11}}>TS Points Kamu : {TMPoint}</Text>
             </View>
             <View style={{paddingTop: 5, paddingRight: 10}}>
               <TouchableOpacity onPress={()=> {
-                  navigation.navigate('Redeem Berhasil')
+                  if(TMPoint>=10000){
+                    hitungNilaiSampah()
+                    navigation.navigate('Redeem Berhasil')
+                  }else{
+                    alert("Mohon maaf Saldo anda kurang untuk melakukan transaksi ini")
+                  }
                   }}>
                 <Text style={{color: '#FFFFFF', fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 14}}>Tukar Sekarang</Text>
               </TouchableOpacity>
@@ -1199,7 +1392,12 @@ function DropOff({ navigation }) {
   const [sampahElektronik, setSampahElektronik] = React.useState(0)
 
   const [TMPoint, setTMPoint] = React.useState()
+  const [totalTMPoint, setTotalTMPoint] = React.useState()
   const [data, setData] = React.useState()
+
+  const [sampahPlastikDatabase, setSampahPlastikDatabase] = React.useState(0)
+  const [sampahKertasDatabase, setSampahKertasDatabase] = React.useState(0)
+  const [sampahKacaDatabase, setSampahKacaDatabase] = React.useState(0)
 
   React.useEffect( () => {
     var user = auth().currentUser;
@@ -1211,6 +1409,10 @@ function DropOff({ navigation }) {
       let data=snapshot.val()
       setData(snapshot.val())
       setTMPoint(data.TMPoint)
+      setSampahKacaDatabase(data.sampahKaca)
+      setSampahKertasDatabase(data.sampahKertas)
+      setSampahPlastikDatabase(data.sampahPlastik)
+      setTotalTMPoint(data.totalTMPoint)
     });
   }, [])
 
@@ -1221,12 +1423,25 @@ function DropOff({ navigation }) {
     totalNilaiSampah = (sampahPlastik * 5000) + (sampahKertas * 8000) + (sampahKaca * 10000) + (sampahElektronik * 20000)
     TMPointSekarang = TMPointSekarang + totalNilaiSampah
 
+    var updateTotalSampahKaca
+    updateTotalSampahKaca =  sampahKacaDatabase + parseInt(sampahKaca)
+
+    var updateTotalSampahKertas
+    updateTotalSampahKertas = sampahKertasDatabase + parseInt(sampahKertas)
+
+    var updateTotalSampahPlastik
+    updateTotalSampahPlastik = sampahPlastikDatabase + parseInt(sampahPlastik)
+    
     var user = auth().currentUser;
       database()
       .ref('users')
       .child(user.uid)
       .update({
         TMPoint: TMPointSekarang,
+        sampahKaca: updateTotalSampahKaca,
+        sampahKertas: updateTotalSampahKertas,
+        sampahPlastik: updateTotalSampahPlastik,
+        totalTMPoint: TMPointSekarang
       })
   }
   return (
@@ -1521,8 +1736,13 @@ function PickUp({ navigation }) {
   const [noHP, setNoHP] = React.useState()
   const [noAlamat, setAlamat] = React.useState()
 
+  const [totalTMPoint, setTotalTMPoint] = React.useState()
   const [TMPoint, setTMPoint] = React.useState()
   const [data, setData] = React.useState()
+
+  const [sampahPlastikDatabase, setSampahPlastikDatabase] = React.useState(0)
+  const [sampahKertasDatabase, setSampahKertasDatabase] = React.useState(0)
+  const [sampahKacaDatabase, setSampahKacaDatabase] = React.useState(0)
 
   React.useEffect( () => {
     var user = auth().currentUser;
@@ -1534,6 +1754,10 @@ function PickUp({ navigation }) {
       let data=snapshot.val()
       setData(snapshot.val())
       setTMPoint(data.TMPoint)
+      setSampahKacaDatabase(data.sampahKaca)
+      setSampahKertasDatabase(data.sampahKertas)
+      setSampahPlastikDatabase(data.sampahPlastik)
+      setTotalTMPoint(data.totalTMPoint)
     });
   }, [])
 
@@ -1541,15 +1765,28 @@ function PickUp({ navigation }) {
     var TMPointSekarang = TMPoint
     var totalNilaiSampah = 0
 
-    totalNilaiSampah = (sampahPlastik * 4000) + (sampahKertas * 7000) + (sampahKaca * 90000) + (sampahElektronik * 19000)
+    totalNilaiSampah = (sampahPlastik * 5000) + (sampahKertas * 9000) + (sampahKaca * 10000) + (sampahElektronik * 18000)
     TMPointSekarang = TMPointSekarang + totalNilaiSampah
 
+    var updateTotalSampahKaca
+    updateTotalSampahKaca =  sampahKacaDatabase + parseInt(sampahKaca)
+
+    var updateTotalSampahKertas
+    updateTotalSampahKertas = sampahKertasDatabase + parseInt(sampahKertas)
+
+    var updateTotalSampahPlastik
+    updateTotalSampahPlastik = sampahPlastikDatabase + parseInt(sampahPlastik)
+    
     var user = auth().currentUser;
       database()
       .ref('users')
       .child(user.uid)
       .update({
         TMPoint: TMPointSekarang,
+        sampahKaca: updateTotalSampahKaca,
+        sampahKertas: updateTotalSampahKertas,
+        sampahPlastik: updateTotalSampahPlastik,
+        totalTMPoint: TMPointSekarang
       })
   }
 
@@ -1675,8 +1912,12 @@ function PickUp({ navigation }) {
         </View>
         <View style={{paddingTop: 25}}>
           <TouchableOpacity style={{backgroundColor: '#33D1C1', paddingHorizontal: 35, paddingVertical: 8, borderRadius: 10, elevation: 5}} onPress={()=> {
-            hitungNilaiSampah()
-            navigation.navigate('Pick Up Diproses')
+            if(noHP && noAlamat){ 
+              hitungNilaiSampah()
+              navigation.navigate('Pick Up Diproses')
+            }else{
+              alert("Alamat atau nomor hp kosong")
+              }
             }}>
             <Text style={{fontSize: 14, color: 'white', textAlign: 'center', fontFamily: 'NotoSansTC-Regular-Alphabetic'}}>Lanjut</Text>
           </TouchableOpacity>
@@ -2013,7 +2254,9 @@ function Lokasi({ navigation }) {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=> {
+            navigation.navigate('Bank Sampah Melati')
+            }}>
           <View style={{paddingTop: 20, flexDirection: 'row', paddingHorizontal: 20, borderBottomColor: '#A6A4A4', borderBottomWidth: 1, paddingBottom: 20}}>
             <Image source={require('./assets/dummy/lokasi-2.png')}/>
             <View style={{paddingLeft: 10}}>
@@ -2022,7 +2265,9 @@ function Lokasi({ navigation }) {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=> {
+            navigation.navigate('Bank Sampah Hijau Lestari')
+            }}>
           <View style={{paddingTop: 20, flexDirection: 'row', paddingHorizontal: 20, borderBottomColor: '#A6A4A4', borderBottomWidth: 1, paddingBottom: 20}}>
             <Image source={require('./assets/dummy/lokasi-3.png')}/>
             <View style={{paddingLeft: 10}}>
@@ -2031,7 +2276,9 @@ function Lokasi({ navigation }) {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=> {
+            navigation.navigate('Bank Sampah Babakan Ciamis')
+            }}>
           <View style={{paddingTop: 20, flexDirection: 'row', paddingHorizontal: 20, borderBottomColor: '#A6A4A4', borderBottomWidth: 1, paddingBottom: 20}}>
             <Image source={require('./assets/dummy/lokasi-4.png')}/>
             <View style={{paddingLeft: 10}}>
@@ -2075,11 +2322,153 @@ function BankSampahWijayaKusuma({ navigation }) {
             </View>
           </View>
           <View style={{flexDirection: 'row'}}>
-            <Image source={require('./assets/icon/bintang.png')}/>
+            <Image source={require('./assets/icon/bintang-5.png')}/>
             <Text style={{color: '#686565', fontSize: 10, paddingTop: 3, paddingLeft: 8}}>1 Bulan lalu</Text>
           </View>
-          <View>
+          <View style={{flexDirection: 'row'}}>
             <Text style={{fontWeight: '400', color: '#000', fontSize: 12, paddingTop: 5}}>Bank Sampah bagus, cuman tempat lumayan jauh</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Image style={{marginTop: 3, marginLeft: 20}} source={require('./assets/icon/like.png')}/>
+              <Image style={{marginTop: 3, marginLeft: 25}} source={require('./assets/icon/dislike.png')}/>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function BankSampahMelati({ navigation }) {
+  return (
+    <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
+      <View style={{paddingTop: 10}}>
+        <View style={{backgroundColor: '#C4C4C4'}}>
+          <Text style={{fontWeight: 'bold', textAlign: 'center', color: '#000', fontSize: 14}}>Bank Sampah Melati</Text>
+          <Text style={{fontWeight: '400', textAlign: 'center', color: '#000', fontSize: 14}}>Jl. St. KA Cicayur No.27, Cisauk, Kec. Cisauk, Kabupaten Tangerang, Banten 15341</Text>
+        </View>
+        <View style={{paddingTop: 10}}>
+          <Image style={{height: 320}} source={require('./assets/dummy/map-melati.png')}/>
+        </View>
+        <View style={{borderBottomWidth:1, paddingTop: 10, opacity: 0.5, borderBottomColor: '#A6A4A4'}}></View>
+        <View style={{paddingTop: 10}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <Image source={require('./assets/dummy/melati.png')}/>
+            <Image source={require('./assets/dummy/add-foto.png')}/>
+          </View>
+        </View>
+        <View style={{paddingLeft: 15}}>
+          <View style={{flexDirection: 'row', paddingTop: 10}}>
+            <Image source={require('./assets/icon/profile-alvin.png')}/>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{fontWeight: 'bold', textAlign: 'center', color: '#000', fontSize: 14}}>Alvin Anandra Brilliandy</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{textAlign: 'center', color: '#686565', fontSize: 10}}>Local Guide</Text>
+                <Text style={{textAlign: 'center', color: '#686565', fontSize: 10}}>. 125 ulasan</Text>
+              </View>
+            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Image source={require('./assets/icon/bintang-3.png')}/>
+            <Text style={{color: '#686565', fontSize: 10, paddingTop: 3, paddingLeft: 8}}>1 Bulan lalu</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{width: 280, fontWeight: '400', color: '#000', fontSize: 12, paddingTop: 5, paddingRight: 25}}>Bank Sampah bagus, cuman tempat lumayan jauh. Dan tidak memuaskan</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Image style={{marginTop: 3, marginLeft: 0}} source={require('./assets/icon/like.png')}/>
+              <Image style={{marginTop: 3, marginLeft: 25}} source={require('./assets/icon/dislike.png')}/>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function BankBabakanCiamis({ navigation }) {
+  return (
+    <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
+      <View style={{paddingTop: 10}}>
+        <View style={{backgroundColor: '#C4C4C4'}}>
+          <Text style={{fontWeight: 'bold', textAlign: 'center', color: '#000', fontSize: 14}}>Bank Sampah Melati</Text>
+          <Text style={{fontWeight: '400', textAlign: 'center', color: '#000', fontSize: 14}}>Jl. St. KA Cicayur No.27, Cisauk, Kec. Cisauk, Kabupaten Tangerang, Banten 15341</Text>
+        </View>
+        <View style={{paddingTop: 10}}>
+          <Image style={{height: 320}} source={require('./assets/dummy/map-babakanciamis.png')}/>
+        </View>
+        <View style={{borderBottomWidth:1, paddingTop: 10, opacity: 0.5, borderBottomColor: '#A6A4A4'}}></View>
+        <View style={{paddingTop: 10}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <Image source={require('./assets/dummy/babakan-ciamis.png')}/>
+            <Image source={require('./assets/dummy/add-foto.png')}/>
+          </View>
+        </View>
+        <View style={{paddingLeft: 15}}>
+          <View style={{flexDirection: 'row', paddingTop: 10}}>
+            <Image source={require('./assets/icon/profile-alvin.png')}/>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{fontWeight: 'bold', textAlign: 'center', color: '#000', fontSize: 14}}>Alvin Anandra Brilliandy</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{textAlign: 'center', color: '#686565', fontSize: 10}}>Local Guide</Text>
+                <Text style={{textAlign: 'center', color: '#686565', fontSize: 10}}>. 125 ulasan</Text>
+              </View>
+            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Image source={require('./assets/icon/bintang-4.png')}/>
+            <Text style={{color: '#686565', fontSize: 10, paddingTop: 3, paddingLeft: 8}}>1 Bulan lalu</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{width: 280, fontWeight: '400', color: '#000', fontSize: 12, paddingTop: 5, paddingRight: 25}}>Bank Sampah bagus, cuman tempat lumayan jauh.</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Image style={{marginTop: 3, marginLeft: 0}} source={require('./assets/icon/like.png')}/>
+              <Image style={{marginTop: 3, marginLeft: 25}} source={require('./assets/icon/dislike.png')}/>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function BankHijauLestari({ navigation }) {
+  return (
+    <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
+      <View style={{paddingTop: 10}}>
+        <View style={{backgroundColor: '#C4C4C4'}}>
+          <Text style={{fontWeight: 'bold', textAlign: 'center', color: '#000', fontSize: 14}}>Bank Sampah Melati</Text>
+          <Text style={{fontWeight: '400', textAlign: 'center', color: '#000', fontSize: 14}}>Jl. St. KA Cicayur No.27, Cisauk, Kec. Cisauk, Kabupaten Tangerang, Banten 15341</Text>
+        </View>
+        <View style={{paddingTop: 10}}>
+          <Image style={{height: 320}} source={require('./assets/dummy/map-hijaulestari.png')}/>
+        </View>
+        <View style={{borderBottomWidth:1, paddingTop: 10, opacity: 0.5, borderBottomColor: '#A6A4A4'}}></View>
+        <View style={{paddingTop: 10}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <Image source={require('./assets/dummy/hijau-lestari.png')}/>
+            <Image source={require('./assets/dummy/add-foto.png')}/>
+          </View>
+        </View>
+        <View style={{paddingLeft: 15}}>
+          <View style={{flexDirection: 'row', paddingTop: 10}}>
+            <Image source={require('./assets/icon/profile-ari.png')}/>
+            <View style={{paddingLeft: 10}}>
+              <Text style={{fontWeight: 'bold', textAlign: 'center', color: '#000', fontSize: 14}}>Ari Cahya Saputra</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{textAlign: 'center', color: '#686565', fontSize: 10}}>Local Guide</Text>
+                <Text style={{textAlign: 'center', color: '#686565', fontSize: 10}}>. 125 ulasan</Text>
+              </View>
+            </View>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Image source={require('./assets/icon/bintang-4.png')}/>
+            <Text style={{color: '#686565', fontSize: 10, paddingTop: 3, paddingLeft: 8}}>1 Bulan lalu</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{width: 280, fontWeight: '400', color: '#000', fontSize: 12, paddingTop: 5, paddingRight: 25}}>Bank Sampah bagus, cuman tempat lumayan jauh</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Image style={{marginTop: 3, marginLeft: 0}} source={require('./assets/icon/like.png')}/>
+              <Image style={{marginTop: 3, marginLeft: 25}} source={require('./assets/icon/dislike.png')}/>
+            </View>
           </View>
         </View>
       </View>
@@ -2148,33 +2537,80 @@ function Event({ navigation }) {
 
 function Feed({ navigation }) {
   return (
-    <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
-      <View style={{borderBottomWidth: 1, borderBottomColor: 'rgba(166, 164, 164, 0.3)'}}>
-        <Text style={{ fontFamily: 'Oswald-SemiBold', color:'#33D1C1', fontSize: 36, textAlign: 'center'}}>TrashMon</Text>
+    <ScrollView>
+      <View style={{backgroundColor : '#E9FFFD', flex: 1}}>
+        <View style={{borderBottomWidth: 1, borderBottomColor: 'rgba(166, 164, 164, 0.3)'}}>
+          <Text style={{ fontFamily: 'Oswald-SemiBold', color:'#33D1C1', fontSize: 36, textAlign: 'center'}}>TrashMon</Text>
+        </View>
+        <View style={{backgroundColor: '#FFF', marginHorizontal: 25, marginVertical: 25, paddingVertical: 10, paddingHorizontal: 10, borderRadius: 10, elevation: 10}}>
+          <View>
+            <Text style={{fontSize: 18, fontWeight: 'bold', color: '#000'}}>Update Fitur DANA Segera Hadir</Text>
+            <Text style={{fontSize: 12, fontWeight: '400', color: '#000', paddingTop: 6}}>Reedem point akan lebih muda dengan menggunakan DANA. Tukarkan pointmu menjadi saldo DANA</Text>
+          </View>
+          <View style={{paddingTop: 15}}>
+            <Image style={{width: 320, height: 180, resizeMode: 'stretch'}} source={require('./assets/dummy/dana.png')}/>
+            <View style={{zIndex: 1, position: 'absolute', paddingTop: 165}}>
+              <Image style={{width: 100, height: 28, resizeMode: 'stretch'}} source={require('./assets/dummy/update.png')}/>
+            </View>
+          </View>
+        </View>
+        <View style={{backgroundColor: '#FFF', marginHorizontal: 25, marginVertical: 10, paddingVertical: 10, paddingHorizontal: 10, borderRadius: 10, elevation: 10}}>
+          <View>
+            <Text style={{fontSize: 18, fontWeight: 'bold', color: '#000'}}>Update Fitur LinkAja Segera Hadir</Text>
+            <Text style={{fontSize: 12, fontWeight: '400', color: '#000', paddingTop: 6}}>Reedem point akan lebih mudah dengan menggunakan LinkAja. Tukarkan pointmu menjadi saldo LinkAJa</Text>
+          </View>
+          <View style={{paddingTop: 15}}>
+            <Image style={{width: 320, height: 180, resizeMode: 'stretch'}} source={require('./assets/dummy/linkaja.png')}/>
+            <View style={{zIndex: 1, position: 'absolute', paddingTop: 170}}>
+              <Image style={{width: 100, height: 28, resizeMode: 'stretch'}} source={require('./assets/dummy/update.png')}/>
+            </View>
+          </View>
+        </View>
+        <View style={{backgroundColor: '#FFF', marginHorizontal: 25, marginVertical: 10, paddingVertical: 10, paddingHorizontal: 10, borderRadius: 10, elevation: 10}}>
+          <View>
+            <Text style={{fontSize: 18, fontWeight: 'bold', color: '#000'}}>Movement bersama LeMinerale Segera Hadir</Text>
+            <Text style={{fontSize: 12, fontWeight: '400', color: '#000', paddingTop: 6}}>Bergabunglah dengan gerakan kami. Le Minerale Recycling Program</Text>
+          </View>
+          <View style={{paddingTop: 15}}>
+            <Image style={{width: 320, height: 180, resizeMode: 'stretch'}} source={require('./assets/dummy/leminerale.png')}/>
+          </View>
+        </View>
+        <View style={{backgroundColor: '#FFF', marginHorizontal: 25, marginVertical: 10, paddingVertical: 10, paddingHorizontal: 10, borderRadius: 10, elevation: 10, marginBottom: 25}}>
+          <View>
+            <Text style={{fontSize: 18, fontWeight: 'bold', color: '#000'}}>TrashMon Peduli Lingkungan</Text>
+            <Text style={{fontSize: 12, fontWeight: '400', color: '#000', paddingTop: 6}}>Terimakasih telah bergabung dan menggunakan aplikasi kami. sehingga kami dapat membantu alam sekitar.</Text>
+          </View>
+          <View style={{paddingTop: 15}}>
+            <Image style={{width: 320, height: 180, resizeMode: 'stretch'}} source={require('./assets/dummy/mangrove.png')}/>
+          </View>
+        </View>
       </View>
-      <View style={{ flexDirection: 'row', paddingTop: 15, backgroundColor: '#BCE3E0', marginHorizontal: 25, borderRadius: 15, marginTop: 25, paddingBottom: 60}}>
-          <View style={{position: 'absolute', paddingTop: 10, paddingLeft: 15}}>
-            <Image source={require('./assets/icon/running.png')}/>
-          </View>
-          <View style={{paddingLeft: 70, position:'absolute'}}>
-            <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, marginLeft: 10, marginTop: 3, paddingTop: 5}}>Pick Up</Text>
-            <Text style={{fontFamily: 'ABeeZee-Regular', fontSize: 16, marginLeft: 10, marginTop: 3}}>Agen kami sedang menuju ke{"\n"}lokasi anda harap tunggu</Text>
-          </View>
-      </View>
-      <View style={{ flexDirection: 'row', paddingTop: 15, backgroundColor: '#BCE3E0', marginHorizontal: 25, borderRadius: 15, marginTop: 20, paddingBottom: 60}}>
-          <View style={{position: 'absolute', paddingTop: 10, paddingLeft: 15}}>
-            <Image source={require('./assets/icon/running.png')}/>
-          </View>
-          <View style={{paddingLeft: 70, position:'absolute'}}>
-            <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, marginLeft: 10, marginTop: 3, paddingTop: 5}}>Drop off</Text>
-            <Text style={{fontFamily: 'ABeeZee-Regular', fontSize: 16, marginLeft: 10, marginTop: 3}}>Agen kami sudah menunggu anda{"\n"}segera antarkan sampah anda</Text>
-          </View>
-      </View>
-    </View>
+    </ScrollView>
   );
 }
 
 function Statistic({ navigation }) {
+  const [sampahPlastik, setSampahPlastik] = React.useState(0)
+  const [sampahKertas, setSampahKertas] = React.useState(0)
+  const [sampahKaca, setSampahKaca] = React.useState(0)
+  const [totalTMPoint, setTotalTMPoint] = React.useState()
+  const [data, setData] = React.useState()
+
+  React.useEffect( () => {
+    var user = auth().currentUser;
+    database()
+    .ref('users')
+    .child(user.uid)
+    .on('value', snapshot => {
+      let data=snapshot.val()
+      setData(snapshot.val())
+      setSampahPlastik(data.sampahPlastik)
+      setSampahKertas(data.sampahKertas)
+      setSampahKaca(data.sampahKaca)
+      setTotalTMPoint(data.totalTMPoint)
+
+    });
+  }, [])
   return (
     <ScrollView  style={{backgroundColor : '#E9FFFD', flex: 1}}>
       <View style={{borderBottomWidth: 1, borderBottomColor: 'rgba(166, 164, 164, 0.3)' }}>
@@ -2190,7 +2626,7 @@ function Statistic({ navigation }) {
             <Image style={{position: 'absolute'}} source={require('./assets/icon/botol.png')}/>
             <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 16, color: '#FFF', paddingLeft: 45, paddingTop: 3}}>Kaca</Text>
             <View>
-              <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 36, color: '#FFF', paddingLeft: 145, paddingTop: 50}}>20</Text>
+              <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 36, color: '#FFF', paddingLeft: 155, paddingTop: 50}}>{sampahKaca}</Text>
               <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 18, color: '#FFF', paddingLeft: 130, paddingTop: 90}}>Kilogram</Text>
             </View>
           </View>
@@ -2204,7 +2640,7 @@ function Statistic({ navigation }) {
                 <Image style={{position: 'absolute', marginLeft: 10, marginTop: 10}} source={require('./assets/icon/koran.png')}/>
                 <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 16, color: '#FFF', paddingLeft: 35, paddingTop: 14}}>Kertas</Text>
                 <View>
-                  <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 36, color: '#FFF', paddingLeft: 65, paddingTop: 50}}>20</Text>
+                  <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 36, color: '#FFF', paddingLeft: 75, paddingTop: 50}}>{sampahKertas}</Text>
                   <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 18, color: '#FFF', paddingLeft: 50, paddingTop: 90}}>Kilogram</Text>
                 </View>
               </View>
@@ -2215,7 +2651,7 @@ function Statistic({ navigation }) {
                 <Image style={{position: 'absolute', marginLeft: 10, marginTop: 10}} source={require('./assets/icon/botol-plastik.png')}/>
                 <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 16, color: '#FFF', paddingLeft: 35, paddingTop: 14}}>Plastik</Text>
                 <View>
-                  <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 36, color: '#FFF', paddingLeft: 65, paddingTop: 50}}>20</Text>
+                  <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 36, color: '#FFF', paddingLeft: 75, paddingTop: 50}}>{sampahPlastik}</Text>
                   <Text style={{position: 'absolute', fontFamily: 'NotoSansTC-Regular-Alphabetic', fontSize: 18, color: '#FFF', paddingLeft: 50, paddingTop: 90}}>Kilogram</Text>
                 </View>
               </View>
@@ -2225,7 +2661,7 @@ function Statistic({ navigation }) {
         <View style={{backgroundColor: '#FFF', marginTop: 25, borderRadius: 10, elevation: 10, marginBottom: 20}}>
           <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 20, paddingTop: 10, color: '#554D4D', textAlign: 'center'}}>Total Point yang kamu dapatkan</Text>
           <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-            <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 20, paddingTop: 15, color: '#554D4D', textAlign: 'center', paddingBottom: 15, color: '#33D1C1'}}>20000000 </Text>
+            <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 20, paddingTop: 15, color: '#554D4D', textAlign: 'center', paddingBottom: 15, color: '#33D1C1'}}>{totalTMPoint} </Text>
             <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 20, paddingTop: 15, color: '#554D4D', textAlign: 'center', paddingBottom: 15}}>TMPoints</Text>
           </View>
         </View>
@@ -2258,7 +2694,7 @@ function Account({ navigation }) {
         </View>
       <View style={{paddingHorizontal: 25, marginTop: 25}}>
         <View style={{alignItems: 'center', backgroundColor: '#DBF5F3', paddingTop: 15, borderRadius: 10}}>
-          <Image source={require('./assets/icon/profile-picture.png')}/>
+          <Image source={require('./assets/icon/user-profile.png')}/>
           <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 26, marginTop: 3, paddingTop: 5, color: '#554D4D'}}>{namaLengkap}</Text>
           <View style={{flexDirection: 'row', marginBottom: 15}}>
             <Text style={{fontFamily: 'NotoSansTC-Bold-Alphabetic', fontSize: 16, marginTop: 3, paddingTop: 5, color: '#33D1C1'}}>{TMPoint} </Text>
@@ -2386,10 +2822,7 @@ function UbahProfil({ navigation }) {
       <ScrollView>
         <View>
           <View style={{alignItems: 'center', paddingTop: 25}}>
-            <Image source={require('./assets/icon/profile-picture-ubah-profil.png')}/>
-            <TouchableOpacity>
-              <Text style={{fontFamily: 'NotoSansTC-Medium-Alphabetic', fontSize: 14, paddingTop: 15, color: '#33D1C1'}}>Perbarui Foto Profil</Text>
-            </TouchableOpacity>
+            <Image source={require('./assets/icon/user-profile.png')}/>
           </View>
           <View>      
             <View style={{backgroundColor : '#E9FFFD', paddingLeft: 15}}>
